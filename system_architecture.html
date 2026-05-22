@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentalHub — System Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#06060f;--bg2:#0c0c1a;--card:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.07);--text:#f0f0f5;--text2:#8a8a9a;--text3:#555566;
+  --blue:#3b82f6;--purple:#8b5cf6;--teal:#14b8a6;--rose:#f43f5e;--amber:#f59e0b;--green:#22c55e;
+}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+
+/* ===== MAIN LAYOUT ===== */
+#app{width:100%;height:100%;position:relative;overflow:hidden;}
+#canvas{width:100%;height:100%;position:relative;}
+#svgLayer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+
+/* ===== HEADER ===== */
+.header{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(6,6,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;}
+.header-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;}
+.header-title span{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header-hint{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;}
+.legend{display:flex;gap:16px;align-items:center;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+
+/* ===== NODES ===== */
+.node{
+  position:absolute;z-index:10;cursor:pointer;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 18px;min-width:130px;text-align:center;
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transform:translate(-50%,-50%);
+  user-select:none;
+}
+.node:hover{background:rgba(255,255,255,0.07);transform:translate(-50%,-50%) scale(1.06);z-index:15;}
+.node.active{border-color:var(--blue);box-shadow:0 0 24px rgba(59,130,246,0.2);z-index:20;transform:translate(-50%,-50%) scale(1.08);}
+.node-icon{font-size:26px;margin-bottom:6px;display:block;}
+.node-label{font-size:12px;font-weight:700;letter-spacing:0.3px;line-height:1.3;}
+.node-sub{font-size:10px;color:var(--text3);margin-top:3px;font-weight:400;}
+.node[data-type="actor"]{border-color:rgba(139,92,246,0.25);}
+.node[data-type="actor"]:hover{border-color:rgba(139,92,246,0.5);box-shadow:0 0 20px rgba(139,92,246,0.12);}
+.node[data-type="platform"]{border-color:rgba(59,130,246,0.25);}
+.node[data-type="platform"]:hover{border-color:rgba(59,130,246,0.5);box-shadow:0 0 20px rgba(59,130,246,0.12);}
+.node[data-type="external"]{border-color:rgba(20,184,166,0.25);}
+.node[data-type="external"]:hover{border-color:rgba(20,184,166,0.5);box-shadow:0 0 20px rgba(20,184,166,0.12);}
+.node[data-type="safety"]{border-color:rgba(244,63,94,0.25);}
+.node[data-type="safety"]:hover{border-color:rgba(244,63,94,0.5);box-shadow:0 0 20px rgba(244,63,94,0.12);}
+
+/* ===== DETAIL PANEL ===== */
+#detailPanel{
+  position:fixed;top:0;right:0;width:440px;height:100%;
+  background:rgba(10,10,20,0.96);backdrop-filter:blur(30px);
+  border-left:1px solid var(--border);
+  transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  z-index:300;overflow-y:auto;padding:0;
+}
+#detailPanel.open{transform:translateX(0);}
+.panel-header{padding:24px 28px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,20,0.98);z-index:5;}
+.panel-close{position:absolute;top:20px;right:20px;width:32px;height:32px;border-radius:8px;background:var(--card);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text2);transition:all 0.2s;}
+.panel-close:hover{background:rgba(255,255,255,0.08);color:var(--text);}
+.panel-icon{font-size:36px;margin-bottom:10px;}
+.panel-title{font-size:22px;font-weight:800;letter-spacing:-0.5px;}
+.panel-type{font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-top:6px;padding:3px 10px;border-radius:6px;display:inline-block;}
+.panel-type.actor{background:rgba(139,92,246,0.12);color:var(--purple);}
+.panel-type.platform{background:rgba(59,130,246,0.12);color:var(--blue);}
+.panel-type.external{background:rgba(20,184,166,0.12);color:var(--teal);}
+.panel-type.safety{background:rgba(244,63,94,0.12);color:var(--rose);}
+.panel-body{padding:24px 28px 80px;}
+.panel-section{margin-bottom:28px;}
+.panel-section-title{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);font-weight:600;margin-bottom:12px;}
+.panel-desc{font-size:14px;color:var(--text2);line-height:1.7;}
+.attr-list{list-style:none;}
+.attr-list li{padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;font-size:13px;display:flex;align-items:flex-start;gap:10px;}
+.attr-key{color:var(--text);font-weight:600;min-width:90px;flex-shrink:0;}
+.attr-val{color:var(--text2);line-height:1.5;}
+.flow-list{list-style:none;counter-reset:flow;}
+.flow-list li{counter-increment:flow;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;font-size:13px;color:var(--text2);line-height:1.5;position:relative;padding-left:44px;}
+.flow-list li::before{content:counter(flow);position:absolute;left:14px;top:12px;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.conn-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.conn-tag{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--card);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all 0.2s;}
+.conn-tag:hover{background:rgba(59,130,246,0.1);border-color:var(--blue);color:var(--text);}
+.state-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.state-item{font-size:11px;padding:6px 10px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text2);text-align:center;}
+.state-item.active-state{border-color:rgba(34,197,94,0.3);color:var(--green);}
+.highlight-box{background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(139,92,246,0.06));border:1px solid rgba(59,130,246,0.15);border-radius:12px;padding:16px;margin-top:12px;}
+.highlight-box .hb-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.highlight-box .hb-text{font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* ===== SVG CONNECTIONS ===== */
+.conn-line{stroke:rgba(255,255,255,0.06);stroke-width:1.5;fill:none;}
+.conn-line.actor-conn{stroke:rgba(139,92,246,0.12);}
+.conn-line.platform-conn{stroke:rgba(59,130,246,0.12);}
+.conn-line.external-conn{stroke:rgba(20,184,166,0.12);}
+.conn-line.safety-conn{stroke:rgba(244,63,94,0.12);}
+.flow-dot{fill:var(--blue);filter:drop-shadow(0 0 4px rgba(59,130,246,0.6));}
+.flow-dot.purple{fill:var(--purple);filter:drop-shadow(0 0 4px rgba(139,92,246,0.6));}
+.flow-dot.teal{fill:var(--teal);filter:drop-shadow(0 0 4px rgba(20,184,166,0.6));}
+.flow-dot.rose{fill:var(--rose);filter:drop-shadow(0 0 4px rgba(244,63,94,0.6));}
+.flow-dot.green{fill:var(--green);filter:drop-shadow(0 0 4px rgba(34,197,94,0.6));}
+
+/* ===== OVERLAY WHEN PANEL OPEN ===== */
+#overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:250;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+#overlay.show{opacity:1;pointer-events:all;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  #detailPanel{width:100%;}
+  .node{min-width:100px;padding:10px 12px;}
+  .node-icon{font-size:20px;}
+  .node-label{font-size:10px;}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="header">
+    <div class="header-title">🏗️ <span>RentalHub</span> — System Architecture</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Actors</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Platform</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>External</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div>Safety</div>
+    </div>
+    <div class="header-hint">Click any node to explore • Dots show data flow direction</div>
+  </div>
+  <div id="canvas">
+    <svg id="svgLayer"></svg>
+  </div>
+  <div id="overlay"></div>
+  <div id="detailPanel">
+    <div class="panel-header">
+      <div class="panel-close" id="panelClose">✕</div>
+      <div class="panel-icon" id="panelIcon"></div>
+      <div class="panel-title" id="panelTitle"></div>
+      <div class="panel-type" id="panelType"></div>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// DATA: ALL NODES
+// =============================================
+const NODES = {
+  individual_lender: {
+    icon:'👤', label:'Individual\nLender', sub:'P2P Supply', type:'actor',
+    x:9, y:24,
+    details: {
+      description:'Any person who lists their personal belongings for others to rent. They are NOT a registered business — just someone with a camera, PS5, or tent gathering dust.',
+      attributes:[
+        {k:'Trust Tier',v:'Tier 2 (Verified Individual) — Aadhaar + phone verified via DigiLocker'},
+        {k:'Can List',v:'All categories EXCEPT vehicles (no white-plate). Max item value: ₹50,000'},
+        {k:'Commission',v:'10-12% per booking'},
+        {k:'Payout',v:'T+2 days after successful return, via Razorpay Route to verified bank account'},
+        {k:'KYC Required',v:'Phone OTP + Aadhaar name via DigiLocker + Bank account verification'},
+        {k:'Earnings',v:'Projected ₹2,000-15,000/month for active lenders (cameras, gaming, etc.)'},
+      ],
+      flows:['Signs up via phone OTP → completes Aadhaar KYC → uploads item photos → sets price & availability → receives booking requests → confirms within 2hrs → hands over item with OTP-verified photo evidence → receives payout T+2 after return'],
+      connections:['registration','listings','payment','notifications']
+    }
+  },
+  vendor_lender: {
+    icon:'🏪', label:'Vendor\nLender', sub:'Business Supply', type:'actor',
+    x:9, y:50,
+    details: {
+      description:'A registered business (sole prop, LLP, Pvt Ltd) that lists professional inventory. Has GST, trade license, and commercial-grade items. The anchor supply that ensures quality and reliability.',
+      attributes:[
+        {k:'Trust Tier',v:'Tier 1 (Verified Vendor) — GST + PAN + Trade License verified by admin'},
+        {k:'Can List',v:'ALL categories including vehicles (yellow plate only, commercial registration required)'},
+        {k:'Commission',v:'12-15% per booking (higher due to more bookings and priority placement)'},
+        {k:'Payout',v:'T+2 days, bulk settlement batches, Razorpay Route'},
+        {k:'Dashboard',v:'Dedicated vendor dashboard: analytics, booking management, payout history, listing performance'},
+        {k:'Badge',v:'🏪 Verified Business — higher search ranking, priority support'},
+      ],
+      flows:['Registers business → uploads GST cert, PAN, Trade License → admin reviews (24-48hrs) → approved as Tier 1 → bulk-uploads inventory → manages availability calendar → receives bookings → professional handover → payouts with GST invoicing'],
+      connections:['registration','listings','payment','admin','notifications']
+    }
+  },
+  renter: {
+    icon:'🙋', label:'Renter', sub:'Demand Side', type:'actor',
+    x:9, y:78,
+    details: {
+      description:'Any individual who wants to temporarily use an item they don\'t own. They search, discover, book, pay, use, and return items. The demand side of the marketplace.',
+      attributes:[
+        {k:'KYC Levels',v:'Tier 3 (phone only → browse only) | Tier 2 (Aadhaar → can book anything) | Items >₹5K require KYC'},
+        {k:'Payment',v:'UPI (primary), Credit/Debit cards, Wallets via Razorpay checkout'},
+        {k:'Pays',v:'Rental amount + optional protection fee (6%) + delivery fee + security deposit (refundable)'},
+        {k:'Deposit',v:'Held in escrow. Refunded instantly after successful return. Deducted if damage found.'},
+        {k:'Cancellation',v:'>24hrs before: 90% refund | <24hrs: 50% refund | No-show: 0% refund'},
+        {k:'Trust Score',v:'Built via: completed rentals + reviews + response rate + KYC level (0-100)'},
+      ],
+      flows:['Opens app → browses/searches → finds item → selects dates → pays (escrow) → receives OTP → picks up or receives delivery → uses item → returns on time → gets deposit back → leaves review'],
+      connections:['registration','search','booking','payment','reviews_trust','notifications']
+    }
+  },
+  admin: {
+    icon:'⚙️', label:'Admin', sub:'Operations', type:'safety',
+    x:63, y:92,
+    details: {
+      description:'Internal team member who manages operations: vendor approvals, dispute escalations, content moderation, fraud review, trust score calibration, and platform health monitoring.',
+      attributes:[
+        {k:'Access',v:'Role-Based Access Control (RBAC) — super_admin, admin, support_agent, ops_manager'},
+        {k:'Dashboard',v:'Admin panel: pending approvals, active disputes, flagged listings, payout queue, analytics'},
+        {k:'Dispute SLA',v:'Theft/safety: 4 hours | Damage >₹5K: 24 hours | Damage <₹5K: 12 hours | Late return: instant auto-charge'},
+        {k:'Daily Tasks',v:'Review overnight bookings, check disputes past SLA, approve vendor applications, review AI-flagged listings'},
+        {k:'Weekly Tasks',v:'Vendor relationship calls, category performance review, drop-off funnel analysis'},
+      ],
+      flows:['Receives escalated disputes → reviews evidence (pre/post photos, chat, GPS logs) → makes resolution decision → updates trust scores → processes payouts/refunds → monitors platform health'],
+      connections:['disputes','reviews_trust','payment']
+    }
+  },
+  registration: {
+    icon:'🔐', label:'Registration\n& KYC', sub:'Identity Layer', type:'platform',
+    x:32, y:14,
+    details: {
+      description:'The identity gateway. Every user (renter, individual lender, vendor) enters the system through registration. Handles phone verification, Aadhaar KYC via DigiLocker, and business verification for vendors.',
+      attributes:[
+        {k:'Tier 3',v:'Phone OTP only → can browse, cannot book or list items >₹5,000'},
+        {k:'Tier 2',v:'Phone + Aadhaar via DigiLocker → full access, can rent & list (no vehicles)'},
+        {k:'Tier 1',v:'Tier 2 + GST + PAN + Trade License → Verified Vendor, can list vehicles (yellow plate)'},
+        {k:'Tech',v:'Supabase Auth (JWT), MSG91 for OTP, DigiLocker API for Aadhaar name pull'},
+        {k:'Data',v:'Phone, name (from Aadhaar), DOB, gender — encrypted at rest (AES-256)'},
+        {k:'DPDPA',v:'Explicit consent required. Users can withdraw consent and request deletion within 30 days.'},
+      ],
+      flows:[
+        'User enters phone → OTP sent via MSG91 → verified → Tier 3 account created',
+        'User taps "Complete KYC" → redirected to DigiLocker → grants consent → Aadhaar name + DOB pulled → Tier 2',
+        'User taps "Register as Business" → uploads GST cert, PAN, Trade License → admin reviews (24-48hrs) → Tier 1'
+      ],
+      connections:['individual_lender','vendor_lender','renter','digilocker','listings']
+    }
+  },
+  listings: {
+    icon:'📦', label:'Listings &\nCatalog', sub:'Supply Engine', type:'platform',
+    x:32, y:36,
+    details: {
+      description:'The item catalog. Where listings are created, stored, managed, and served. Every listing has 35+ attributes including photos, pricing, location, condition grade, and availability calendar.',
+      attributes:[
+        {k:'Categories',v:'Cameras, Gaming, Musical Instruments, Camping, Electronics, Fashion, Tools, Party Supplies, Furniture, Sports, Books, Vehicles (vendor only)'},
+        {k:'Required Fields',v:'Title, 4+ photos, daily price, security deposit, location, category, condition grade'},
+        {k:'AI Features',v:'Auto-title optimization, pricing suggestions based on similar listings, photo quality check'},
+        {k:'Status States',v:'Available | Unavailable | Rented | Under Review | Suspended | Deleted'},
+        {k:'Availability',v:'Simple toggle (Available/Unavailable) + calendar blocking for date ranges'},
+        {k:'Stale Detection',v:'Auto-reminder after 14 days idle. Demoted in search after 30 days with no activity.'},
+        {k:'Storage',v:'Photos in Supabase Storage (CDN-backed). Vector embeddings (pgvector 1536-dim) for semantic search.'},
+        {k:'Min Price',v:'₹200 floor — below this, transaction costs exceed revenue'},
+      ],
+      flows:[
+        'Lender taps "List Item" → selects category → uploads 4+ photos → enters title, description, condition',
+        'Sets daily/weekly/monthly prices → sets security deposit (max 50% of item value)',
+        'Sets location (auto-detect GPS or manual) → chooses delivery options (self-pickup / platform delivery)',
+        'AI suggests optimized title + competitive price → Lender confirms → Listing goes LIVE',
+        'Listing indexed in search (category, location, price, vector embedding for semantic search)'
+      ],
+      connections:['registration','search','ai_engine','individual_lender','vendor_lender']
+    }
+  },
+  search: {
+    icon:'🔍', label:'Search &\nDiscovery', sub:'Matching Engine', type:'platform',
+    x:32, y:56,
+    details: {
+      description:'How renters find what they need. Combines AI intent parsing, geolocation, trust scoring, and social proximity to rank and surface the most relevant listings.',
+      attributes:[
+        {k:'Search Types',v:'Text search ("camera for wedding"), category browse (tap "Cameras"), map-based ("near me")'},
+        {k:'AI Parser',v:'GPT-4o-mini extracts: category, occasion, urgency, budget range from natural language queries'},
+        {k:'Ranking Formula',v:'0.25×Trust + 0.25×Distance + 0.20×Rating + 0.15×Price + 0.10×Response + 0.05×Recency'},
+        {k:'Social Proximity',v:'+0.10 bonus if lender is in renter\'s contact graph (with permission). The Meesho insight.'},
+        {k:'Boosted Listings',v:'+0.15 bonus for paid promotion (labeled "Promoted"). Revenue stream.'},
+        {k:'New Lister Boost',v:'+0.05 for first 30 days. Helps cold-start problem.'},
+        {k:'Filters',v:'Price range, dates, delivery option, condition, lender type (individual vs vendor), distance'},
+        {k:'Tech',v:'Supabase full-text search + pgvector semantic similarity + PostGIS geospatial queries'},
+      ],
+      flows:[
+        'Renter types query or taps category → AI parses intent → geolocation applied',
+        'Ranking engine scores all matching listings using weighted formula',
+        'Filters applied (price, dates, delivery, condition) → results returned',
+        'Boosted listings get premium placement (labeled) → social proximity applied → final ranking served'
+      ],
+      connections:['renter','listings','ai_engine','booking','reviews_trust']
+    }
+  },
+  booking: {
+    icon:'📋', label:'Booking\nEngine', sub:'Transaction Core', type:'platform',
+    x:55, y:36,
+    details: {
+      description:'The transaction core. Manages the entire lifecycle of a rental: from reservation to payment to delivery to return. Implements a 16-state state machine with locking, escrow, and OTP verification.',
+      attributes:[
+        {k:'Locking',v:'Redis-based. Item locked for 10 minutes during checkout (SET NX EX 600). No double-booking.'},
+        {k:'Price Calc',v:'rental_amount (daily×days) + protection_fee (6% optional) + delivery_fee (Dunzo quote) + deposit'},
+        {k:'Lender Response',v:'2 hours to acknowledge booking. Auto-cancel + full refund if no response.'},
+        {k:'OTP Handover',v:'Renter enters OTP shown on lender\'s screen → handover confirmed. Same for return.'},
+        {k:'Photo Evidence',v:'4 mandatory photos at handover (front, back, detail, serial). Timestamped, geotagged, immutable.'},
+        {k:'16 States',v:'Created → Payment Pending → Confirmed → Acknowledged → Ready → In Transit → Handed Over → Active → Return Initiated → Returned → Inspection Passed → Settled → Review Pending → Completed (+ Cancelled, Refunded, Dispute Open, Overdue, Theft Suspected)'},
+      ],
+      flows:[
+        'Renter selects dates → system checks availability calendar → locks item in Redis for 10 min',
+        'Price calculated (rental + protection + delivery + deposit) → shown to renter → renter pays via Razorpay',
+        'Payment success → booking CONFIRMED → dates blocked in calendar → lender notified via WhatsApp',
+        'Lender acknowledges within 2hrs → item prepared → handover via self-pickup or Dunzo delivery',
+        'OTP-verified handover with 4 photos → rental period ACTIVE → countdown timer starts',
+        'Return initiated → item inspected → AI compares pre/post photos → deposit refunded or dispute opened'
+      ],
+      connections:['search','payment','delivery','reviews_trust','disputes','notifications']
+    }
+  },
+  payment: {
+    icon:'💰', label:'Payment &\nEscrow', sub:'Money Flow', type:'platform',
+    x:55, y:58,
+    details: {
+      description:'Handles ALL money movement: renter payments, escrow holding, deposit management, lender payouts, refunds, and platform commission extraction. Uses Razorpay Route for split payments.',
+      attributes:[
+        {k:'Gateway',v:'Razorpay — UPI (primary), cards, wallets. PCI-DSS compliant. No card data touches our servers.'},
+        {k:'Escrow',v:'Razorpay Route: rental amount + deposit held separately in escrow. Released on events.'},
+        {k:'Commission',v:'10-15% of rental amount extracted at settlement. Individual: 10-12%, Vendor: 12-15%.'},
+        {k:'Deposit',v:'Held in escrow. Returned instantly on successful return. Partially/fully deducted on damage.'},
+        {k:'Payout',v:'T+2 days after successful return. Batch settlement to lender\'s verified bank account.'},
+        {k:'Protection Pool',v:'6% optional fee from renter → pooled for damage claims that exceed deposit. NOT insurance.'},
+        {k:'Cancellation Fees',v:'>24hrs: 10% fee (90% refund) | <24hrs: 50% fee | No-show by renter: no refund | No-show by lender: full refund + lender penalty'},
+        {k:'Idempotency',v:'All payment operations use idempotency keys. Webhook signatures verified. No duplicate charges.'},
+      ],
+      flows:[
+        'Renter pays TOTAL (rental + protection + delivery + deposit) → Razorpay processes',
+        'Razorpay Route splits: rental → escrow, deposit → separate escrow, protection → platform pool, delivery → Dunzo',
+        'After successful return with no damage: deposit → renter (instant), rental − commission → lender (T+2)',
+        'If damage found: repair cost deducted from deposit → sent to lender. Remaining deposit → renter.',
+        'If theft: full deposit → lender, protection pool activated, renter blacklisted, police report assisted'
+      ],
+      connections:['booking','razorpay','individual_lender','vendor_lender','renter']
+    }
+  },
+  delivery: {
+    icon:'🚚', label:'Delivery &\nHandover', sub:'Logistics', type:'platform',
+    x:55, y:14,
+    details: {
+      description:'Manages physical item movement between lender and renter. Supports self-pickup (free) and platform delivery via Dunzo/Porter API. OTP-verified handover with mandatory photo documentation.',
+      attributes:[
+        {k:'Methods',v:'Self-pickup (renter goes to lender — free) | Platform delivery (Dunzo/Porter — paid)'},
+        {k:'Self-Pickup Flow',v:'Renter gets lender area (exact address after booking) → meets → both open app → "Start Handover" → photos → OTP'},
+        {k:'Platform Delivery',v:'Dunzo API called → agent assigned → picks up from lender → in-transit tracking → delivers to renter → OTP'},
+        {k:'Photo Protocol',v:'4 photos required: front, back, detail (scratches/wear), serial number. Timestamped + geotagged.'},
+        {k:'Return',v:'Same process in reverse. 24hr reminder before return date. Late return auto-charges from deposit.'},
+        {k:'OTP Verification',v:'Renter enters OTP from lender\'s screen at pickup. Agent takes photos at both ends for platform delivery.'},
+      ],
+      flows:[
+        'Booking confirmed → delivery method determined (self-pickup or Dunzo)',
+        'Self-pickup: Renter gets area → meets lender → both take 4 photos → OTP entered → handover confirmed',
+        'Platform delivery: Dunzo API dispatched → agent picks up (lender takes photos) → in-transit → delivered (renter takes photos + OTP)',
+        'Return: 24hr reminder → reverse process → lender receives + photos → inspection begins'
+      ],
+      connections:['booking','dunzo','renter','individual_lender','vendor_lender']
+    }
+  },
+  reviews_trust: {
+    icon:'⭐', label:'Reviews &\nTrust Score', sub:'Reputation', type:'platform',
+    x:32, y:78,
+    details: {
+      description:'The reputation engine. Two-way reviews (hidden until both submit), composite trust scores (0-100), and progressive trust unlocks. This is what makes strangers trust each other.',
+      attributes:[
+        {k:'Two-Way',v:'Both renter AND lender review each other. Rating (1-5) + text + optional photos.'},
+        {k:'Hidden Reveal',v:'Reviews hidden until BOTH parties submit OR 5 days pass. Prevents retaliation bias (Airbnb model).'},
+        {k:'Trust Score',v:'0-100 composite: KYC (0-25) + History (0-30) + Reviews (0-20) + Reliability (0-15) + Disputes (0 to −10) + Social (0-10)'},
+        {k:'Thresholds',v:'<20: "New" (limited) | 20-49: "Building Trust" | 50-79: "Trusted" (priority search) | 80+: "Top Rated" (badge + featured)'},
+        {k:'Progressive Unlock',v:'First listing capped at ₹5,000 item value. Increases with good ratings and completed rentals.'},
+        {k:'Impact',v:'Trust score directly affects search ranking (25% weight). Low score = buried listings.'},
+        {k:'Penalties',v:'Each dispute lost: −3 to −10 points. 3+ disputes lost → mandatory admin review. Possible suspension.'},
+      ],
+      flows:[
+        'Booking completed → both parties prompted to leave review → reviews hidden until both submit or 5 days',
+        'Reviews revealed simultaneously → trust scores recalculated for both parties',
+        'High trust score → better search placement → more bookings → flywheel effect',
+        'Low trust score → buried listings → fewer bookings → eventually suspended if pattern continues'
+      ],
+      connections:['booking','search','disputes','renter','individual_lender','vendor_lender']
+    }
+  },
+  disputes: {
+    icon:'⚖️', label:'Disputes &\nSafety', sub:'Trust Repair', type:'safety',
+    x:32, y:92,
+    details: {
+      description:'Handles everything that goes wrong: damage claims, quality mismatches, no-shows, late returns, and theft. Three-tier resolution: AI auto-resolve → human review → founder escalation.',
+      attributes:[
+        {k:'Types',v:'Damage to item | Quality mismatch | No-show / Non-delivery | Late return | Item not returned (theft)'},
+        {k:'Evidence',v:'Pre-rental photos, post-rental photos, AI damage comparison, chat history, GPS/timestamp logs'},
+        {k:'AI Triage',v:'GPT-4o Vision compares pre/post photos. Confidence >85% → auto-resolve. Below → human review.'},
+        {k:'Resolution',v:'Renter wins (refund from deposit/pool) | Lender wins (damage deducted from deposit) | Split decision'},
+        {k:'Theft Protocol',v:'Renter blacklisted, full deposit → lender, protection pool activated, police report assisted'},
+        {k:'SLA',v:'Theft: 4hrs | Damage >₹5K: 24hrs | Damage <₹5K: 12hrs | Late return: instant auto-charge | Quality: 24hrs'},
+        {k:'Trust Impact',v:'Losing party: −5 to −15 trust points. 3+ losses → admin review → possible suspension.'},
+      ],
+      flows:[
+        'Issue detected → dispute raised by renter or lender with photos + description',
+        'AI triages: auto-resolvable? (e.g., late return → charge extra days from deposit)',
+        'If unclear → assigned to human reviewer → evidence compared → decision made within SLA',
+        'Both parties notified with explanation → money moved accordingly → trust scores updated'
+      ],
+      connections:['booking','reviews_trust','admin','payment']
+    }
+  },
+  digilocker: {
+    icon:'🆔', label:'DigiLocker', sub:'Identity API', type:'external',
+    x:79, y:14,
+    details: {
+      description:'Government of India\'s digital document verification platform. Used for Aadhaar-based KYC without storing actual Aadhaar numbers. Pulls verified name, DOB, gender with user consent.',
+      attributes:[
+        {k:'Purpose',v:'Verify user identity for Tier 2 KYC without handling physical Aadhaar cards'},
+        {k:'Data Pulled',v:'Full name, date of birth, gender — from Aadhaar (with explicit user consent)'},
+        {k:'Flow',v:'User redirected to DigiLocker → grants consent → data returned to platform via API'},
+        {k:'Compliance',v:'DPDPA 2023 compliant. Consent-first. User can withdraw consent anytime.'},
+        {k:'Security',v:'We never store Aadhaar number. Only verified name + DOB for identity confirmation.'},
+      ],
+      flows:['User taps "Complete KYC" → redirected to DigiLocker → logs in → grants consent → Aadhaar name + DOB returned → user becomes Tier 2'],
+      connections:['registration']
+    }
+  },
+  ai_engine: {
+    icon:'🤖', label:'AI Engine', sub:'GPT-4o / Claude', type:'external',
+    x:79, y:39,
+    details: {
+      description:'The intelligence layer. Powers search intent parsing, listing optimization, price suggestions, damage photo comparison (Vision), and customer support chatbot.',
+      attributes:[
+        {k:'Models',v:'GPT-4o-mini (text tasks, fast/cheap), GPT-4o Vision (damage comparison, photo analysis)'},
+        {k:'Search',v:'Natural language → structured query. "camera for wedding shoot in Kothrud" → {category: cameras, occasion: wedding, location: Kothrud}'},
+        {k:'Listing Help',v:'Auto-suggests optimized titles, competitive pricing based on similar listings in the area'},
+        {k:'Damage Detection',v:'Compares pre-rental photos vs post-rental photos. Returns: {damage_detected, confidence, details}'},
+        {k:'Support Bot',v:'First-line customer support. Handles FAQs, booking status, cancellation requests. Escalates to human if needed.'},
+        {k:'Cost',v:'~₹2,000-5,000/month at MVP scale. GPT-4o-mini is extremely cheap for text tasks.'},
+      ],
+      flows:['Search query → AI intent parsing → structured filters returned','Listing created → AI suggests optimized title + competitive price','Return photos uploaded → AI Vision compares pre/post → damage confidence score returned','User asks question → AI chatbot responds → escalates to human if confidence low'],
+      connections:['search','listings','disputes']
+    }
+  },
+  razorpay: {
+    icon:'💳', label:'Razorpay', sub:'Payments API', type:'external',
+    x:79, y:58,
+    details: {
+      description:'Primary payment gateway. Handles UPI, cards, wallets. Razorpay Route enables split payments and escrow for marketplace model. PCI-DSS compliant — no card data on our servers.',
+      attributes:[
+        {k:'Products Used',v:'Razorpay Payment Gateway (checkout) + Razorpay Route (split payments / escrow)'},
+        {k:'Methods',v:'UPI (primary — 85% of txns), Credit/Debit cards, Paytm/PhonePe wallets, Net banking'},
+        {k:'Route',v:'Split each payment into: rental escrow + deposit escrow + protection pool + delivery fee + platform commission'},
+        {k:'Settlement',v:'T+2 to lender bank account. Batch processing. Bank account verification at KYC.'},
+        {k:'Refunds',v:'Instant for UPI. 5-7 days for cards. Automated via webhook triggers.'},
+        {k:'Security',v:'Webhook signature verification, idempotency keys, PCI-DSS Level 1 compliance'},
+        {k:'Cost',v:'~2% per transaction (standard Razorpay pricing)'},
+      ],
+      flows:['Renter initiates payment → Razorpay checkout (UPI/card) → payment confirmed via webhook → Route splits funds to escrow buckets → settlement triggered on return confirmation'],
+      connections:['payment']
+    }
+  },
+  dunzo: {
+    icon:'📍', label:'Dunzo /\nPorter', sub:'Logistics API', type:'external',
+    x:79, y:78,
+    details: {
+      description:'Third-party delivery integration for physical item transport. Handles pickup from lender, in-transit tracking, and delivery to renter. Also handles reverse logistics (returns).',
+      attributes:[
+        {k:'API',v:'Dunzo for Merchants API / Porter API — real-time quotes, agent dispatch, live tracking'},
+        {k:'Coverage',v:'Available in 20+ Indian cities. Works well in Pune, Mumbai, Bangalore (launch cities).'},
+        {k:'Pricing',v:'Dynamic based on distance + item size. Typically ₹50-200 per delivery in same city.'},
+        {k:'Flow',v:'Platform calls API with pickup/drop coordinates → agent assigned → ETA shared → live tracking → OTP at delivery'},
+        {k:'Reverse Logistics',v:'Same API for returns. Agent picks up from renter, delivers to lender.'},
+        {k:'Fallback',v:'If Dunzo unavailable, fall back to Porter. If both unavailable, self-pickup only.'},
+      ],
+      flows:['Booking confirmed with delivery → Dunzo API called → agent dispatched → picks up item from lender → in-transit → delivers to renter → OTP verification → delivery confirmed'],
+      connections:['delivery','booking']
+    }
+  },
+  notifications: {
+    icon:'🔔', label:'Notifications', sub:'Multi-Channel', type:'external',
+    x:79, y:92,
+    details: {
+      description:'Multi-channel notification system: WhatsApp Business API (primary), push notifications (FCM), email (Resend), and SMS (MSG91). Ensures no booking or event goes unnoticed.',
+      attributes:[
+        {k:'WhatsApp',v:'Primary channel via Wati/AiSensy. Booking confirmations, return reminders, payout receipts.'},
+        {k:'Push',v:'Firebase Cloud Messaging (FCM). Real-time alerts for new bookings, delivery updates.'},
+        {k:'Email',v:'Resend API. Transactional emails: receipts, invoices, dispute resolutions.'},
+        {k:'SMS',v:'MSG91. OTP delivery + fallback for users without WhatsApp.'},
+        {k:'Key Events',v:'Booking created/cancelled, lender acknowledgment, delivery dispatched, 24hr return reminder, payout processed, review received, dispute resolution'},
+      ],
+      flows:['Event triggered (e.g., booking confirmed) → notification template selected → sent via WhatsApp (primary) + Push → email for formal records → SMS fallback for OTP'],
+      connections:['booking','individual_lender','vendor_lender','renter']
+    }
+  },
+};
+
+// =============================================
+// DATA: ALL CONNECTIONS (from → to + dot color)
+// =============================================
+const CONNECTIONS = [
+  {from:'individual_lender',to:'registration',color:'purple',label:'Sign Up'},
+  {from:'vendor_lender',to:'registration',color:'purple',label:'Business KYC'},
+  {from:'renter',to:'registration',color:'purple',label:'Sign Up'},
+  {from:'registration',to:'digilocker',color:'teal',label:'Verify Aadhaar'},
+  {from:'registration',to:'listings',color:'blue',label:'Verified → List'},
+  {from:'individual_lender',to:'listings',color:'purple',label:'Create Listing'},
+  {from:'vendor_lender',to:'listings',color:'purple',label:'Upload Inventory'},
+  {from:'listings',to:'ai_engine',color:'teal',label:'Optimize'},
+  {from:'listings',to:'search',color:'blue',label:'Feed Catalog'},
+  {from:'renter',to:'search',color:'purple',label:'Browse/Search'},
+  {from:'search',to:'ai_engine',color:'teal',label:'Intent + Rank'},
+  {from:'search',to:'booking',color:'blue',label:'Book Item'},
+  {from:'booking',to:'payment',color:'blue',label:'Collect Payment'},
+  {from:'payment',to:'razorpay',color:'teal',label:'Process'},
+  {from:'booking',to:'delivery',color:'blue',label:'Dispatch'},
+  {from:'delivery',to:'dunzo',color:'teal',label:'Logistics API'},
+  {from:'booking',to:'notifications',color:'teal',label:'Alert All'},
+  {from:'booking',to:'reviews_trust',color:'blue',label:'After Return'},
+  {from:'reviews_trust',to:'search',color:'blue',label:'Trust → Rank'},
+  {from:'reviews_trust',to:'disputes',color:'rose',label:'If Issue'},
+  {from:'disputes',to:'admin',color:'rose',label:'Escalate'},
+  {from:'disputes',to:'payment',color:'rose',label:'Refund/Deduct'},
+  {from:'payment',to:'individual_lender',color:'green',label:'Payout'},
+  {from:'payment',to:'vendor_lender',color:'green',label:'Payout'},
+];
+
+// =============================================
+// RENDER
+// =============================================
+const canvas = document.getElementById('canvas');
+const svg = document.getElementById('svgLayer');
+const panel = document.getElementById('detailPanel');
+const overlay = document.getElementById('overlay');
+let activeNode = null;
+
+// Create nodes
+Object.entries(NODES).forEach(([id, n]) => {
+  const el = document.createElement('div');
+  el.className = 'node';
+  el.dataset.id = id;
+  el.dataset.type = n.type;
+  el.style.left = n.x + '%';
+  el.style.top = `calc(${n.y}% + 26px)`;
+  el.innerHTML = `<span class="node-icon">${n.icon}</span><div class="node-label">${n.label.replace(/\n/g,'<br>')}</div><div class="node-sub">${n.sub}</div>`;
+  el.addEventListener('click', () => openPanel(id));
+  canvas.appendChild(el);
+});
+
+// Draw SVG connections + animated dots
+function getNodeCenter(id) {
+  const n = NODES[id];
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: (n.x / 100) * rect.width,
+    y: (n.y / 100) * rect.height + 26
+  };
+}
+
+function drawConnections() {
+  svg.innerHTML = '';
+  svg.setAttribute('viewBox', `0 0 ${canvas.clientWidth} ${canvas.clientHeight}`);
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  svg.appendChild(defs);
+
+  CONNECTIONS.forEach((conn, i) => {
+    const a = getNodeCenter(conn.from);
+    const b = getNodeCenter(conn.to);
+
+    // Calculate control point for curved line
+    const mx = (a.x + b.x) / 2;
+    const my = (a.y + b.y) / 2;
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    const curveAmount = Math.min(dist * 0.15, 40);
+    // Perpendicular offset for curve
+    const nx = -dy / dist * curveAmount;
+    const ny = dx / dist * curveAmount;
+    const cx = mx + nx;
+    const cy = my + ny;
+
+    const pathId = `path-${i}`;
+    const d = `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
+
+    // Path element
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('id', pathId);
+    path.classList.add('conn-line');
+    if (conn.color === 'purple') path.classList.add('actor-conn');
+    else if (conn.color === 'teal') path.classList.add('external-conn');
+    else if (conn.color === 'rose') path.classList.add('safety-conn');
+    else path.classList.add('platform-conn');
+    svg.appendChild(path);
+
+    // Animated dot
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('r', '3.5');
+    circle.classList.add('flow-dot');
+    if (conn.color === 'purple') circle.classList.add('purple');
+    else if (conn.color === 'teal') circle.classList.add('teal');
+    else if (conn.color === 'rose') circle.classList.add('rose');
+    else if (conn.color === 'green') circle.classList.add('green');
+
+    const anim = document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
+    anim.setAttribute('dur', (3 + Math.random() * 3) + 's');
+    anim.setAttribute('repeatCount', 'indefinite');
+    anim.setAttribute('begin', (Math.random() * 4) + 's');
+    const mpath = document.createElementNS('http://www.w3.org/2000/svg','mpath');
+    mpath.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#'+pathId);
+    mpath.setAttribute('href','#'+pathId);
+    anim.appendChild(mpath);
+    circle.appendChild(anim);
+    svg.appendChild(circle);
+  });
+}
+
+drawConnections();
+window.addEventListener('resize', drawConnections);
+
+// =============================================
+// DETAIL PANEL
+// =============================================
+function openPanel(id) {
+  const n = NODES[id];
+  const d = n.details;
+  if (activeNode) document.querySelector(`.node[data-id="${activeNode}"]`)?.classList.remove('active');
+  activeNode = id;
+  document.querySelector(`.node[data-id="${id}"]`)?.classList.add('active');
+
+  document.getElementById('panelIcon').textContent = n.icon;
+  document.getElementById('panelTitle').textContent = n.label.replace(/\n/g,' ');
+  const typeEl = document.getElementById('panelType');
+  typeEl.textContent = n.type.toUpperCase();
+  typeEl.className = 'panel-type ' + n.type;
+
+  let html = '';
+
+  // Description
+  html += `<div class="panel-section"><div class="panel-section-title">What It Is</div><div class="panel-desc">${d.description}</div></div>`;
+
+  // Attributes
+  if (d.attributes && d.attributes.length) {
+    html += `<div class="panel-section"><div class="panel-section-title">Key Attributes</div><ul class="attr-list">`;
+    d.attributes.forEach(a => {
+      html += `<li><span class="attr-key">${a.k}</span><span class="attr-val">${a.v}</span></li>`;
+    });
+    html += `</ul></div>`;
+  }
+
+  // Flows
+  if (d.flows && d.flows.length) {
+    html += `<div class="panel-section"><div class="panel-section-title">How It Works</div><ol class="flow-list">`;
+    d.flows.forEach(f => { html += `<li>${f}</li>`; });
+    html += `</ol></div>`;
+  }
+
+  // Connected entities
+  if (d.connections && d.connections.length) {
+    html += `<div class="panel-section"><div class="panel-section-title">Connected To</div><div class="conn-tags">`;
+    d.connections.forEach(c => {
+      if (NODES[c]) {
+        html += `<div class="conn-tag" onclick="openPanel('${c}')">${NODES[c].icon} ${NODES[c].label.replace(/\n/g,' ')}</div>`;
+      }
+    });
+    html += `</div></div>`;
+  }
+
+  // Special: Booking state machine
+  if (id === 'booking') {
+    html += `<div class="panel-section"><div class="panel-section-title">Booking State Machine (16 States)</div><div class="state-grid">`;
+    ['Created','Payment Pending','Confirmed','Acknowledged','Ready for Handover','In Transit','Handed Over','Active','Return Initiated','Overdue','Returned','Inspection Passed','Dispute Open','Settled','Review Pending','Completed'].forEach((s,i) => {
+      const isActive = [2,7,11,15].includes(i);
+      html += `<div class="state-item ${isActive?'active-state':''}">${s}</div>`;
+    });
+    html += `</div><div class="highlight-box"><div class="hb-title">State Flow</div><div class="hb-text">Created → Payment Pending → Confirmed → Acknowledged → Ready → In Transit → Handed Over → Active → Return Initiated → Returned → Inspection Passed → Settled → Review Pending → Completed</div></div></div>`;
+  }
+
+  // Special: Trust score breakdown
+  if (id === 'reviews_trust') {
+    html += `<div class="panel-section"><div class="panel-section-title">Trust Score Formula (0-100)</div>`;
+    const components = [
+      {name:'KYC Level',max:25,desc:'Phone=5, Aadhaar=15, Bank=20, GST=25'},
+      {name:'Transaction History',max:30,desc:'0 txns=0, 1-5=10, 6-20=20, 21+=30'},
+      {name:'Review Score',max:20,desc:'avg_rating × 4 (min 3 reviews to activate)'},
+      {name:'Response Reliability',max:15,desc:'response_rate×10 + completion_rate×5'},
+      {name:'Dispute History',max:0,desc:'0 lost=0, 1 lost=−3, 2=−7, 3+=−10 + review'},
+      {name:'Social Proof',max:10,desc:'Google/FB=+3, Photo=+2, Bio=+2, Referral=+3'},
+    ];
+    html += `<ul class="attr-list">`;
+    components.forEach(c => {
+      html += `<li><span class="attr-key">${c.name} (${c.max > 0 ? '0-'+c.max : 'penalty'})</span><span class="attr-val">${c.desc}</span></li>`;
+    });
+    html += `</ul><div class="highlight-box"><div class="hb-title">Thresholds</div><div class="hb-text">&lt;20: "New" (limited) → 20-49: "Building Trust" → 50-79: "Trusted" (priority search) → 80+: "Top Rated" (badge + featured)</div></div></div>`;
+  }
+
+  // Special: Payment money flow
+  if (id === 'payment') {
+    html += `<div class="panel-section"><div class="panel-section-title">Example: ₹1,200 Camera Rental (3 days)</div><div class="highlight-box"><div class="hb-text">
+      <strong>Renter pays:</strong> ₹1,200 (rental) + ₹72 (protection 6%) + ₹120 (delivery) + ₹2,500 (deposit) = <strong>₹3,892</strong><br><br>
+      <strong>After successful return:</strong><br>
+      → Lender gets: ₹1,200 − 12% = <strong>₹1,056</strong> (T+2)<br>
+      → Platform keeps: ₹144 (commission) + ₹72 (protection) = <strong>₹216</strong><br>
+      → Renter gets back: <strong>₹2,500</strong> deposit (instant)<br>
+      → Dunzo gets: <strong>₹120</strong> delivery fee
+    </div></div></div>`;
+  }
+
+  document.getElementById('panelBody').innerHTML = html;
+  panel.classList.add('open');
+  overlay.classList.add('show');
+  panel.scrollTop = 0;
+}
+
+function closePanel() {
+  panel.classList.remove('open');
+  overlay.classList.remove('show');
+  if (activeNode) {
+    document.querySelector(`.node[data-id="${activeNode}"]`)?.classList.remove('active');
+    activeNode = null;
+  }
+}
+
+document.getElementById('panelClose').addEventListener('click', closePanel);
+overlay.addEventListener('click', closePanel);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+</script>
+
+</body>
+</html>
