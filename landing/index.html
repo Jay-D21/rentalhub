@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentalHub — Rent Anything From People Near You in Pune</title>
+<meta name="description" content="India's trusted P2P rental marketplace. Rent cameras, gaming consoles, drones, camping gear from verified neighbors in Pune. Earn from what you own.">
+<meta property="og:title" content="RentalHub — Rent Anything Near You">
+<meta property="og:description" content="1,247 items available in Pune. Aadhaar-verified, escrow-protected rentals.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-brand">
+    <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <rect width="28" height="28" rx="7" fill="currentColor"/>
+      <path d="M8 14.5C8 11.46 10.46 9 13.5 9H16V11.5H13.5C11.84 11.5 10.5 12.84 10.5 14.5C10.5 16.16 11.84 17.5 13.5 17.5H16V14.5H18.5V20H13.5C10.46 20 8 17.54 8 14.5Z" fill="var(--bg)"/>
+    </svg>
+    <span>RentalHub</span>
+  </a>
+  <div class="nav-links">
+    <a href="#listings">Browse</a>
+    <a href="#how">How it works</a>
+    <a href="#trust">Trust</a>
+    <a href="#earn">Earn</a>
+  </div>
+  <a href="#signup" class="nav-cta">Join Free</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#listings" class="mm-link">Browse Listings</a>
+  <a href="#how" class="mm-link">How it works</a>
+  <a href="#trust" class="mm-link">Trust & Safety</a>
+  <a href="#earn" class="mm-link">Earn Money</a>
+  <a href="#signup" class="mm-link mm-cta">Join Free — It's Live</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge" data-reveal>
+      <span class="pulse-dot"></span>
+      Live in Pune &nbsp;·&nbsp; 1,247 items available
+    </div>
+    <h1 class="hero-title" data-reveal>
+      Rent anything<br>from people <em>near&nbsp;you</em>
+    </h1>
+    <p class="hero-sub" data-reveal>
+      Browse real items from verified neighbors.<br>Book in minutes. Return when done.
+    </p>
+    <div class="hero-search" data-reveal>
+      <div class="search-box">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Try 'Canon 5D', 'PS5', 'camping tent'..." id="searchInput" autocomplete="off">
+        <button class="search-btn" type="button">Search</button>
+      </div>
+      <div class="search-tags">
+        <span>Trending:</span>
+        <button class="tag" type="button">DSLR Cameras</button>
+        <button class="tag" type="button">PS5</button>
+        <button class="tag" type="button">Camping Gear</button>
+        <button class="tag" type="button">Drones</button>
+      </div>
+    </div>
+    <!-- Live ticker -->
+    <div class="ticker-wrap" data-reveal>
+      <span class="ticker-label">
+        <span class="live-dot"></span> Live
+      </span>
+      <div class="ticker-inner">
+        <div class="ticker-track" id="tickerTrack">
+          <span>Arjun just rented a Canon 80D · 3 min ago</span>
+          <span>New: DJI Mini 4 Pro listed · Baner, Pune</span>
+          <span>Priya earned ₹2,400 this weekend</span>
+          <span>Camping kit returned safely · ⭐⭐⭐⭐⭐</span>
+          <span>47 new listings added today</span>
+          <span>Sneha rented a guitar for 3 days · Kothrud</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Floating decorative items -->
+  <div class="hero-floats" aria-hidden="true">
+    <div class="float-item f1">📷</div>
+    <div class="float-item f2">🎮</div>
+    <div class="float-item f3">⛺</div>
+    <div class="float-item f4">🎸</div>
+    <div class="float-item f5">🚁</div>
+    <div class="float-item f6">🔭</div>
+  </div>
+  <!-- Stats strip -->
+  <div class="hero-stats" data-reveal>
+    <div class="hstat">
+      <div class="hstat-num" data-count="1247">0</div>
+      <div class="hstat-lbl">Items in Pune</div>
+    </div>
+    <div class="hstat-sep"></div>
+    <div class="hstat">
+      <div class="hstat-num" data-count="2847">0</div>
+      <div class="hstat-lbl">Verified members</div>
+    </div>
+    <div class="hstat-sep"></div>
+    <div class="hstat">
+      <div class="hstat-num">₹14,600</div>
+      <div class="hstat-lbl">Avg. lender/month</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LIVE LISTINGS ===== -->
+<section class="section bg-warm" id="listings">
+  <div class="container">
+    <div class="section-top" data-reveal>
+      <div>
+        <div class="label">Available Now</div>
+        <h2 class="h2">1,247 items near you in Pune</h2>
+      </div>
+      <a href="#signup" class="link-arrow">View all listings →</a>
+    </div>
+    <div class="listings-grid" data-reveal>
+
+      <article class="lcard">
+        <div class="lcard-img">
+          <img src="images/camera.png" alt="Canon 200D DSLR" loading="lazy">
+          <span class="lbadge avail">Available</span>
+          <button class="lsave" aria-label="Save" data-saved="false">♡</button>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-meta">
+            <span class="ldist">📍 0.8 km · Koregaon Park</span>
+            <span class="lrating">★ 4.9 <em>(23)</em></span>
+          </div>
+          <h3 class="lname">Canon 200D DSLR + 18-55mm Lens</h3>
+          <div class="lprice">₹800<span>/day</span> <small>· ₹5,000 deposit</small></div>
+          <div class="lowner">
+            <span class="lav" style="--h:200">R</span>
+            <span>Rahul K. · Trust 94</span>
+            <span class="lkyc">✓ KYC</span>
+          </div>
+          <button class="lbtn">Rent Now</button>
+        </div>
+      </article>
+
+      <article class="lcard">
+        <div class="lcard-img">
+          <img src="images/ps5.png" alt="PS5 Console" loading="lazy">
+          <span class="lbadge avail">Available</span>
+          <button class="lsave" aria-label="Save" data-saved="false">♡</button>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-meta">
+            <span class="ldist">📍 1.2 km · Aundh</span>
+            <span class="lrating">★ 4.8 <em>(17)</em></span>
+          </div>
+          <h3 class="lname">PS5 + 2 Controllers + 3 Games</h3>
+          <div class="lprice">₹500<span>/day</span> <small>· ₹8,000 deposit</small></div>
+          <div class="lowner">
+            <span class="lav" style="--h:120">A</span>
+            <span>Amit S. · Trust 87</span>
+            <span class="lkyc">✓ KYC</span>
+          </div>
+          <button class="lbtn">Rent Now</button>
+        </div>
+      </article>
+
+      <article class="lcard">
+        <div class="lcard-img">
+          <img src="images/camping.png" alt="Camping Kit" loading="lazy">
+          <span class="lbadge avail">Available</span>
+          <button class="lsave" aria-label="Save" data-saved="false">♡</button>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-meta">
+            <span class="ldist">📍 2.1 km · Baner</span>
+            <span class="lrating">★ 4.7 <em>(31)</em></span>
+          </div>
+          <h3 class="lname">4-Person Camping Kit (Tent + Bags)</h3>
+          <div class="lprice">₹800<span>/day</span> <small>· ₹3,000 deposit</small></div>
+          <div class="lowner">
+            <span class="lav" style="--h:340">P</span>
+            <span>Priya M. · Trust 91</span>
+            <span class="lkyc">✓ KYC</span>
+          </div>
+          <button class="lbtn">Rent Now</button>
+        </div>
+      </article>
+
+      <article class="lcard">
+        <div class="lcard-img">
+          <img src="images/drone.png" alt="DJI Drone" loading="lazy">
+          <span class="lbadge rented">Rented till Jun 5</span>
+          <button class="lsave" aria-label="Save" data-saved="false">♡</button>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-meta">
+            <span class="ldist">📍 0.5 km · Viman Nagar</span>
+            <span class="lrating">★ 5.0 <em>(8)</em></span>
+          </div>
+          <h3 class="lname">DJI Mini 4 Pro + Extra Batteries</h3>
+          <div class="lprice">₹1,200<span>/day</span> <small>· ₹15,000 deposit</small></div>
+          <div class="lowner">
+            <span class="lav" style="--h:40">V</span>
+            <span>Vikram N. · Trust 98</span>
+            <span class="lkyc">✓ KYC</span>
+          </div>
+          <button class="lbtn" disabled>Available Jun 5</button>
+        </div>
+      </article>
+
+      <article class="lcard">
+        <div class="lcard-img">
+          <img src="images/guitar.png" alt="Acoustic Guitar" loading="lazy">
+          <span class="lbadge avail">Available</span>
+          <button class="lsave" aria-label="Save" data-saved="false">♡</button>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-meta">
+            <span class="ldist">📍 1.7 km · Kothrud</span>
+            <span class="lrating">★ 4.6 <em>(12)</em></span>
+          </div>
+          <h3 class="lname">Yamaha F310 Acoustic Guitar</h3>
+          <div class="lprice">₹250<span>/day</span> <small>· ₹2,000 deposit</small></div>
+          <div class="lowner">
+            <span class="lav" style="--h:280">S</span>
+            <span>Sneha R. · Trust 83</span>
+            <span class="lkyc">✓ KYC</span>
+          </div>
+          <button class="lbtn">Rent Now</button>
+        </div>
+      </article>
+
+      <article class="lcard">
+        <div class="lcard-img">
+          <img src="images/projector.png" alt="4K Projector" loading="lazy">
+          <span class="lbadge avail">Available</span>
+          <button class="lsave" aria-label="Save" data-saved="false">♡</button>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-meta">
+            <span class="ldist">📍 3.2 km · Hadapsar</span>
+            <span class="lrating">★ 4.8 <em>(19)</em></span>
+          </div>
+          <h3 class="lname">BenQ 4K Projector + 100" Screen</h3>
+          <div class="lprice">₹900<span>/day</span> <small>· ₹6,000 deposit</small></div>
+          <div class="lowner">
+            <span class="lav" style="--h:160">K</span>
+            <span>Karan T. · Trust 89</span>
+            <span class="lkyc">✓ KYC</span>
+          </div>
+          <button class="lbtn">Rent Now</button>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLEM ===== -->
+<section class="section bg-white" id="problem">
+  <div class="container">
+    <div class="section-top center" data-reveal>
+      <div class="label">The Real Problem</div>
+      <h2 class="h2">You own expensive things<br>you barely use</h2>
+    </div>
+    <div class="problem-grid" data-reveal>
+      <div class="problem-card">
+        <div class="prob-emoji">📷</div>
+        <div class="prob-name">DSLR Camera</div>
+        <div class="prob-price">₹80,000</div>
+        <div class="prob-use">Used <strong>15 days</strong> a year</div>
+        <div class="prob-bar"><div class="bar-fill" style="--w:4%"></div></div>
+      </div>
+      <div class="problem-card">
+        <div class="prob-emoji">👗</div>
+        <div class="prob-name">Wedding Lehenga</div>
+        <div class="prob-price">₹50,000</div>
+        <div class="prob-use">Worn <strong>exactly once</strong></div>
+        <div class="prob-bar"><div class="bar-fill" style="--w:0.3%"></div></div>
+      </div>
+      <div class="problem-card">
+        <div class="prob-emoji">🎮</div>
+        <div class="prob-name">PS5 Console</div>
+        <div class="prob-price">₹55,000</div>
+        <div class="prob-use">Played <strong>2 hrs/week</strong></div>
+        <div class="prob-bar"><div class="bar-fill" style="--w:12%"></div></div>
+      </div>
+      <div class="problem-card">
+        <div class="prob-emoji">🏕️</div>
+        <div class="prob-name">Camping Kit</div>
+        <div class="prob-price">₹25,000</div>
+        <div class="prob-use">Used <strong>3 trips</strong> a year</div>
+        <div class="prob-bar"><div class="bar-fill" style="--w:2.5%"></div></div>
+      </div>
+    </div>
+    <p class="problem-punch" data-reveal>That's <strong>₹2,10,000</strong> gathering dust in just one home.</p>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section bg-warm" id="how">
+  <div class="container">
+    <div class="section-top center" data-reveal>
+      <div class="label">How It Works</div>
+      <h2 class="h2">Dead simple. For everyone.</h2>
+    </div>
+    <div class="how-tabs" data-reveal>
+      <button class="htab active" data-tab="renter">I want to rent</button>
+      <button class="htab" data-tab="lender">I want to earn</button>
+    </div>
+
+    <div class="how-panel active" data-panel="renter" data-reveal>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-icon">🔍</div>
+          <h3>Search</h3>
+          <p>Find items near you. Filter by price, distance, and ratings.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-icon">💳</div>
+          <h3>Book & Pay</h3>
+          <p>UPI, cards, wallets. Escrow protects both sides.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-icon">🤝</div>
+          <h3>Pick Up</h3>
+          <p>OTP-verified handover with mandatory photo documentation.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-icon">⭐</div>
+          <h3>Return & Review</h3>
+          <p>Return on time, get deposit back instantly, leave a review.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-panel" data-panel="lender" data-reveal>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-icon">📸</div>
+          <h3>List</h3>
+          <p>Upload photos, set your price. Takes 2 minutes.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-icon">🔔</div>
+          <h3>Get Requests</h3>
+          <p>Accept or decline. Toggle availability anytime.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-icon">🤝</div>
+          <h3>Hand Over</h3>
+          <p>Meet the renter, take 4 photos, verify OTP. Done.</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-icon">💰</div>
+          <h3>Get Paid</h3>
+          <p>Money in your bank T+2 after return. Automatic.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="section bg-white" id="categories">
+  <div class="container">
+    <div class="section-top center" data-reveal>
+      <div class="label">Categories</div>
+      <h2 class="h2">Rent anything. Really.</h2>
+      <p class="sub">If it's gathering dust, it belongs here.</p>
+    </div>
+    <div class="cat-grid" data-reveal>
+      <div class="cat-card big">
+        <span class="cat-icon">📷</span>
+        <span class="cat-name">Cameras & Lenses</span>
+        <span class="cat-price">from ₹500/day</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🎮</span>
+        <span class="cat-name">Gaming</span>
+        <span class="cat-price">from ₹300/day</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🚁</span>
+        <span class="cat-name">Drones</span>
+        <span class="cat-price">from ₹800/day</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🎸</span>
+        <span class="cat-name">Instruments</span>
+        <span class="cat-price">from ₹200/day</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🏕️</span>
+        <span class="cat-name">Camping</span>
+        <span class="cat-price">from ₹400/day</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">👗</span>
+        <span class="cat-name">Fashion</span>
+        <span class="cat-price">from ₹500/day</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🔧</span>
+        <span class="cat-name">Tools</span>
+        <span class="cat-price">from ₹150/day</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🎉</span>
+        <span class="cat-name">Party & Events</span>
+        <span class="cat-price">from ₹300/day</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST ===== -->
+<section class="section bg-dark" id="trust">
+  <div class="container">
+    <div class="section-top center" data-reveal>
+      <div class="label light">Built on Trust</div>
+      <h2 class="h2 light">Strangers become neighbors</h2>
+      <p class="sub light">Every rental backed by 5 layers of protection.</p>
+    </div>
+    <div class="trust-grid" data-reveal>
+      <div class="trust-card">
+        <div class="trust-icon">🆔</div>
+        <h3>Aadhaar KYC</h3>
+        <p>DigiLocker integration. You always know exactly who you're renting to — or from.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🔒</div>
+        <h3>Escrow Payments</h3>
+        <p>Money held securely by Razorpay. Lender gets paid only after safe return.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">📸</div>
+        <h3>Photo Evidence</h3>
+        <p>4 mandatory photos at handover — timestamped, geotagged. No disputes about condition.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🤖</div>
+        <h3>AI Damage Detection</h3>
+        <p>GPT-4o Vision compares before/after photos. Fair, instant, unbiased resolution.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">⭐</div>
+        <h3>Trust Scores</h3>
+        <p>0–100 reputation built over time. Higher score = better placement, higher limits.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🛡️</div>
+        <h3>Protection Plan</h3>
+        <p>Optional 6% fee covers accidental damage beyond deposit. Full peace of mind.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EARN ===== -->
+<section class="section bg-white" id="earn">
+  <div class="container">
+    <div class="earn-layout" data-reveal>
+      <div class="earn-text">
+        <div class="label">Earn From What You Own</div>
+        <h2 class="h2">Your camera can pay<br>its own EMI</h2>
+        <p class="sub">List items. Set your price. Toggle availability. Earn while you sleep.</p>
+        <div class="earn-calc">
+          <div class="calc-row">
+            <span>Canon 200D rented 8 days/month</span>
+            <strong>₹6,400</strong>
+          </div>
+          <div class="calc-row">
+            <span>PS5 rented 10 days/month</span>
+            <strong>₹5,000</strong>
+          </div>
+          <div class="calc-row">
+            <span>Camping kit rented 4x/month</span>
+            <strong>₹3,200</strong>
+          </div>
+          <div class="calc-divider"></div>
+          <div class="calc-row total">
+            <span>Potential monthly earnings</span>
+            <strong>₹14,600</strong>
+          </div>
+        </div>
+        <a href="#signup" class="btn-primary">Start Earning Free →</a>
+      </div>
+      <div class="earn-phone-wrap">
+        <div class="earn-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ph-header">Your Dashboard</div>
+            <div class="ph-stats">
+              <div class="ph-stat"><div class="ph-val">₹14,600</div><div class="ph-lbl">This month</div></div>
+              <div class="ph-stat"><div class="ph-val">23</div><div class="ph-lbl">Bookings</div></div>
+            </div>
+            <div class="ph-listing">
+              <div class="ph-dot green"></div>
+              <div class="ph-info"><div class="ph-name">Canon 200D DSLR</div><div class="ph-price">₹800/day</div></div>
+              <div class="ph-badge">⭐ 4.9</div>
+            </div>
+            <div class="ph-listing">
+              <div class="ph-dot orange"></div>
+              <div class="ph-info"><div class="ph-name">PS5 + 2 Controllers</div><div class="ph-price">₹500/day</div></div>
+              <div class="ph-badge rented">Rented</div>
+            </div>
+            <div class="ph-listing">
+              <div class="ph-dot green"></div>
+              <div class="ph-info"><div class="ph-name">4-Person Camping Kit</div><div class="ph-price">₹800/day</div></div>
+              <div class="ph-badge">⭐ 4.7</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section bg-warm" id="testimonials">
+  <div class="container">
+    <div class="section-top center" data-reveal>
+      <div class="label">Beta Users</div>
+      <h2 class="h2">Real people. Real results.</h2>
+    </div>
+    <div class="testi-grid" data-reveal>
+      <figure class="testi-card">
+        <blockquote>
+          <p>"Rented a DSLR for my sister's wedding. Saved ₹60,000 and the camera was perfect. OTP handover took 2 minutes."</p>
+        </blockquote>
+        <figcaption>
+          <div class="tav" style="--h:340">P</div>
+          <div>
+            <cite>Priya M.</cite>
+            <span>Pune · Beta Renter</span>
+          </div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <blockquote>
+          <p>"Listed my camping kit and made ₹8,400 last month doing literally nothing — just accepted requests and handed over."</p>
+        </blockquote>
+        <figcaption>
+          <div class="tav" style="--h:200">R</div>
+          <div>
+            <cite>Rahul K.</cite>
+            <span>Pune · Beta Lender</span>
+          </div>
+        </figcaption>
+      </figure>
+      <figure class="testi-card">
+        <blockquote>
+          <p>"The photo documentation is genius. No awkward 'it was already scratched' conversations. Everything is timestamped."</p>
+        </blockquote>
+        <figcaption>
+          <div class="tav" style="--h:120">S</div>
+          <div>
+            <cite>Sneha R.</cite>
+            <span>Pune · Beta Renter</span>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section bg-white" id="faq">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-left" data-reveal>
+        <div class="label">FAQ</div>
+        <h2 class="h2">Questions we<br>get a lot</h2>
+        <p class="sub">Email: hello@rentalhub.in</p>
+      </div>
+      <div class="faq-list" data-reveal>
+        <details class="faq-item">
+          <summary>What if the item gets damaged? <span>+</span></summary>
+          <div>Security deposit covers minor damage. For larger issues, AI compares before/after photos and resolves fairly. You can also opt into the 6% Protection Plan for full coverage.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I know the person is legit? <span>+</span></summary>
+          <div>Every user is Aadhaar-verified via DigiLocker before their first transaction. You always see their full name, photo, and trust score (0–100) before accepting any booking.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What can't be listed? <span>+</span></summary>
+          <div>Private vehicles (white-plate) are not allowed — Motor Vehicles Act requirement. Consumables, weapons, and prescription items are also prohibited. Everything else is welcome.</div>
+        </details>
+        <details class="faq-item">
+          <summary>When do I get paid as a lender? <span>+</span></summary>
+          <div>Payment releases T+2 after the renter confirms the return. Goes directly to your registered bank account. No manual action needed from you.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a fee to list? <span>+</span></summary>
+          <div>Listing is completely free. We take 12% only when a rental successfully completes. No subscription, no upfront cost, no hidden charges.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARKET PROOF ===== -->
+<section class="section bg-warm" id="proof">
+  <div class="container">
+    <div class="proof-strip" data-reveal>
+      <div class="proof-item">
+        <div class="proof-num">$41.5M</div>
+        <div class="proof-desc">Fat Llama acquired by Hygglo — P2P rentals proven globally</div>
+      </div>
+      <div class="proof-sep"></div>
+      <div class="proof-item">
+        <div class="proof-num">₹266 Cr</div>
+        <div class="proof-desc">Rentomojo FY25 revenue — India rental demand is real</div>
+      </div>
+      <div class="proof-sep"></div>
+      <div class="proof-item">
+        <div class="proof-num">491M</div>
+        <div class="proof-desc">UPI users — peer-to-peer payment infrastructure ready</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SIGNUP ===== -->
+<section class="section bg-dark" id="signup">
+  <div class="container">
+    <div class="signup-grid" data-reveal>
+      <div class="signup-left">
+        <div class="label light">Join Free — It's Live</div>
+        <h2 class="h2 light">Start renting or<br>earning today</h2>
+        <p class="sub light">Pune is live. 1,247 items available.</p>
+        <div class="signup-perks">
+          <span>✓ Free to join</span>
+          <span>✓ No listing fees</span>
+          <span>✓ KYC in 2 min</span>
+        </div>
+        <div class="signup-stats-row">
+          <div class="ss"><div class="ss-val">₹14,600</div><div class="ss-lbl">Avg. monthly earnings</div></div>
+          <div class="ss"><div class="ss-val">4.8★</div><div class="ss-lbl">Average trust rating</div></div>
+          <div class="ss"><div class="ss-val">&lt;2 min</div><div class="ss-lbl">KYC time</div></div>
+        </div>
+      </div>
+      <div class="signup-right">
+        <form class="signup-form" id="signupForm">
+          <div class="stabs">
+            <button type="button" class="stab active" data-stab="renter">I want to rent</button>
+            <button type="button" class="stab" data-stab="lender">I want to earn</button>
+          </div>
+          <input type="text" class="sinput" placeholder="Full name" required>
+          <input type="email" class="sinput" placeholder="Email address" required>
+          <input type="tel" class="sinput" placeholder="Mobile number (+91)" required>
+          <button type="submit" class="sbtn">Create Free Account →</button>
+          <p class="snote">Free forever. KYC required before first rental.</p>
+        </form>
+        <div class="signup-success" id="signupSuccess" style="display:none">
+          <div class="ss-icon">✓</div>
+          <h3>Account created!</h3>
+          <p>Check your email. KYC takes 2 minutes via DigiLocker.</p>
+        </div>
+        <div class="member-row">
+          <div class="mavs">
+            <span class="mav" style="--h:200">R</span>
+            <span class="mav" style="--h:340">P</span>
+            <span class="mav" style="--h:120">A</span>
+            <span class="mav" style="--h:40">V</span>
+            <span class="mav" style="--h:280">S</span>
+          </div>
+          <span class="mcount"><strong>2,847</strong> members and growing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="7" fill="currentColor"/>
+            <path d="M8 14.5C8 11.46 10.46 9 13.5 9H16V11.5H13.5C11.84 11.5 10.5 12.84 10.5 14.5C10.5 16.16 11.84 17.5 13.5 17.5H16V14.5H18.5V20H13.5C10.46 20 8 17.54 8 14.5Z" fill="var(--bg)"/>
+          </svg>
+          <span>RentalHub</span>
+        </div>
+        <p>Rent anything from people near you.<br>Made with 🫶 in Pune.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#listings">Browse Listings</a>
+          <a href="#how">How it works</a>
+          <a href="#trust">Trust & Safety</a>
+          <a href="#earn">Earn Money</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Rental Agreement</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 RentalHub. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#" aria-label="Twitter">𝕏</a>
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="LinkedIn">in</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" role="alert" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
