@@ -1,8 +1,10 @@
 # 🛠️ RentalHub — Tech Stack & Tools
 
-**Last updated:** June 1, 2026 | **Version:** 1.0
+**Last updated:** June 1, 2026 | **Version:** 2.0 (Post-Council Review)
 
 > Every language, framework, tool, API, and service we're using — from frontend to backend to infrastructure. This is the single source of truth for the engineering team.
+>
+> **For the full reasoning behind each choice, see [ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md)** — Council-style debate with counter-arguments and migration triggers.
 
 ---
 
@@ -10,10 +12,10 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  FRONTEND         Next.js 14 (React) + Flutter (Phase 2)       │
-│  BACKEND          Supabase (PostgreSQL + Auth + Edge Functions)  │
-│  PAYMENTS         Razorpay (Route + Escrow)                      │
-│  AI               OpenAI GPT-4o / GPT-4o-mini                   │
+│  FRONTEND         Next.js 14 (React) + React Native (Phase 2)   │
+│  BACKEND          Supabase + Next.js API Routes + FastAPI (AI)   │
+│  PAYMENTS         Razorpay (Route + Escrow) → Juspay (Phase 2)   │
+│  AI               Gemini Flash (primary) + GPT-4o (critical)     │
 │  REAL-TIME        Supabase Realtime (WebSocket)                  │
 │  CACHE            Upstash Redis                                  │
 │  SEARCH           pgvector (semantic) + PostgreSQL (full-text)   │
@@ -60,13 +62,15 @@
 
 | Component | Technology | Why |
 |-----------|-----------|-----|
-| **Framework** | [Flutter](https://flutter.dev/) (Dart) | Single codebase → iOS + Android, native performance |
-| **State** | Riverpod | Production-grade state management for Flutter |
-| **HTTP** | Dio | Interceptors for auth tokens, retry logic |
-| **Push** | Firebase Cloud Messaging (FCM) | Native push notifications |
-| **Camera** | `camera` + `image_picker` | In-app photo capture for handover evidence |
-| **Maps** | Google Maps Flutter | Pickup/delivery location selection |
-| **Local Storage** | Hive / SharedPreferences | Offline caching, draft listings |
+| **Framework** | [React Native](https://reactnative.dev/) + [Expo](https://expo.dev/) | TypeScript unification with Next.js web — shared logic, types, validation. Larger India hiring pool. |
+| **State** | Zustand (shared with web) | Same state library as web — code reuse |
+| **Navigation** | Expo Router | File-based routing mirroring Next.js patterns |
+| **HTTP** | TanStack Query + fetch | Same data layer as web |
+| **Push** | Expo Notifications + FCM | Managed push with Expo, FCM under the hood |
+| **Camera** | Expo Camera + ImagePicker | In-app photo capture for handover evidence |
+| **Maps** | react-native-maps | Pickup/delivery location selection |
+| **OTA Updates** | EAS Update (CodePush alternative) | Ship bug fixes without App Store review |
+| **Local Storage** | MMKV | Fast key-value storage, offline caching |
 
 ---
 
@@ -160,22 +164,24 @@ Renter pays → Razorpay → Escrow (rental + deposit + protection fee)
 
 | Feature | Model | Purpose |
 |---------|-------|---------|
-| **Semantic Search** | OpenAI `text-embedding-3-small` | Convert search queries + listing descriptions → 1536-dim vectors for similarity matching |
-| **Intent Parsing** | GPT-4o-mini | Parse "camera for wedding shoot this weekend" → `{category: cameras, occasion: wedding, urgency: 3_days}` |
-| **Listing Optimization** | GPT-4o-mini | Auto-improve titles, suggest competitive pricing based on market data |
-| **Damage Detection** | GPT-4o Vision | Compare pre-rental vs post-rental photos → `{damage_detected: bool, confidence: 0-1, details: "..."}` |
-| **Fraud Detection** | Custom rules + GPT-4o-mini | Anomaly detection: unusual booking patterns, fake listings, identity red flags |
-| **Support Chatbot** | GPT-4o-mini (fine-tuned) | First-line support: booking help, refund status, listing guidance |
-| **Dispute Triage** | GPT-4o | Analyze evidence (photos, chat, GPS logs) → recommend resolution for human reviewer |
+| **Semantic Search** | Gemini `text-embedding-004` | Convert search queries + listing descriptions → vectors for similarity matching (33x cheaper than OpenAI) |
+| **Intent Parsing** | Gemini Flash | Parse "camera for wedding shoot this weekend" → structured filters. Ultra-low cost, Mumbai PoP = low latency |
+| **Listing Optimization** | Gemini Flash | Auto-improve titles, suggest competitive pricing based on market data |
+| **Damage Detection** | GPT-4o Vision (primary) + Gemini Pro (fallback) | Compare pre-rental vs post-rental photos. GPT-4o is best for money-critical accuracy |
+| **Fraud Detection** | Gemini Flash + custom rules | Anomaly detection: unusual booking patterns, fake listings, identity red flags |
+| **Support Chatbot** | Gemini Flash | First-line support: booking help, refund status, listing guidance |
+| **Dispute Triage** | GPT-4o | Analyze evidence (photos, chat, GPS logs) → recommend resolution. Highest accuracy needed |
+
+**Multi-Provider Strategy:** Gemini Flash for 90% of AI calls (cheapest, lowest latency via Mumbai PoP). GPT-4o for 10% of calls (damage detection, disputes — where accuracy = money).
 
 **AI Cost Estimate (Month 6):**
 ```
-Embeddings:     ~$15/month   (10K listings × 3 updates/month)
-Search intent:  ~$30/month   (50K searches × GPT-4o-mini)
+Embeddings:     ~$1/month    (10K listings × Gemini embedding)
+Search intent:  ~$1/month    (50K searches × Gemini Flash)
 Damage detect:  ~$50/month   (2K returns × GPT-4o Vision)
-Support bot:    ~$20/month   (5K conversations)
+Support bot:    ~$2/month    (5K conversations × Gemini Flash)
 ─────────────────────────────
-Total AI cost:  ~$115/month  (~₹9,600)
+Total AI cost:  ~$54/month   (~₹4,500) — down from ~$115 with OpenAI-only
 ```
 
 ---
@@ -305,9 +311,9 @@ Total infra:          ~$45/month  (~₹3,750)
 
 | Language | Where | % of Codebase |
 |----------|-------|---------------|
-| **TypeScript** | Next.js frontend + API routes | ~55% |
-| **SQL** | PostgreSQL schemas, queries, RLS policies, migrations | ~15% |
-| **Dart** | Flutter mobile app (Phase 2) | ~20% (Phase 2) |
+| **TypeScript** | Next.js frontend + API routes + React Native mobile | ~72% |
+| **SQL** | PostgreSQL schemas, queries, RLS policies, migrations | ~12% |
+| **Python** | FastAPI AI microservice (damage detection, ML pipeline) | ~6% |
 | **HTML/CSS/JS** | Landing page, email templates | ~8% |
 | **Deno/TypeScript** | Supabase Edge Functions | ~2% |
 
@@ -396,6 +402,8 @@ NEXT_PUBLIC_POSTHOG_KEY=
 
 > [!IMPORTANT]
 > **This document should be updated every time a new tool, API, or technology is added to the stack.** If it's not in this document, it shouldn't be in the codebase.
+>
+> **Decision rationale:** See [ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md) for the Council-style analysis of every choice, with counter-arguments, cost projections, and migration triggers.
 
 ---
 
