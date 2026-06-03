@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import site from '../data/site.json';
+---
+
+<BaseLayout
+  title="Terms & Conditions — RentalHub"
+  description="Terms of service for using the RentalHub platform. Please read before booking or listing vehicles."
+>
+
+<section class="hero" style="min-height:35vh; padding-top:calc(var(--nav-h) + 3rem);">
+  <div class="container">
+    <div style="max-width:700px;">
+      <h1 class="hero-title" data-reveal>Terms & Conditions</h1>
+      <p class="hero-sub" data-reveal data-delay="100">
+        Last updated: {site.legal.lastUpdatedTerms} · {site.legal.companyName}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="legal-content">
+      <p class="legal-meta">These Terms & Conditions ("Terms") govern your use of the RentalHub platform operated by {site.legal.companyName} ("Company," "we," "us," or "our"). By accessing or using RentalHub, you agree to be bound by these Terms.</p>
+
+      <h2>1. Acceptance of Terms</h2>
+      <p>By creating an account, registering as a partner, or using any feature of RentalHub, you confirm that you:</p>
+      <ul>
+        <li>Are at least 18 years of age</li>
+        <li>Hold a valid driving licence for the vehicle category you intend to rent</li>
+        <li>Have read, understood, and agree to these Terms</li>
+        <li>Have read and agree to our <a href="/privacy" style="color:var(--accent)">Privacy Policy</a></li>
+      </ul>
+
+      <h2>2. Description of Service</h2>
+      <p>RentalHub is a technology platform that connects customers ("Riders") seeking to rent bikes, scooters, and cars with independent rental shop owners ("Partners"). RentalHub acts as a marketplace intermediary and is not itself a vehicle rental company. All rental transactions are between Riders and Partners directly.</p>
+
+      <h2>3. User Accounts</h2>
+      <h3>3.1 Registration</h3>
+      <p>You must provide accurate, complete, and current information during registration. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
+
+      <h3>3.2 Account Termination</h3>
+      <p>We reserve the right to suspend or terminate your account if you violate these Terms, provide false information, or engage in fraudulent or harmful activities on the platform.</p>
+
+      <h2>4. For Rental Partners</h2>
+      <h3>4.1 Listing Requirements</h3>
+      <p>To list vehicles on RentalHub, Partners must:</p>
+      <ul>
+        <li>Provide accurate business registration or identity documents</li>
+        <li>Ensure all listed vehicles have valid Registration Certificates (RC) and insurance</li>
+        <li>Set fair, transparent pricing with no hidden charges</li>
+        <li>Maintain vehicles in roadworthy condition as required by the Motor Vehicles Act, 1988</li>
+        <li>Respond to booking requests within 2 hours or as specified in the listing</li>
+      </ul>
+
+      <h3>4.2 Commission and Payments</h3>
+      <p>RentalHub charges an 8% commission on the rental value of each successful booking. Payouts are processed within 24–48 hours of trip completion via NEFT or UPI to your registered bank account.</p>
+
+      <h3>4.3 Partner Responsibilities</h3>
+      <p>Partners are solely responsible for:</p>
+      <ul>
+        <li>The condition and roadworthiness of their vehicles</li>
+        <li>Compliance with all applicable motor vehicle regulations</li>
+        <li>Verifying a Rider's driving licence at the time of handover</li>
+        <li>Resolving disputes with Riders in good faith</li>
+        <li>Maintaining valid commercial vehicle insurance where required</li>
+      </ul>
+
+      <h2>5. For Riders</h2>
+      <h3>5.1 Rider Responsibilities</h3>
+      <p>Riders using vehicles booked through RentalHub must:</p>
+      <ul>
+        <li>Hold a valid driving licence for the vehicle category rented</li>
+        <li>Comply with all traffic laws and regulations</li>
+        <li>Not sublet or allow unauthorized persons to operate the vehicle</li>
+        <li>Return the vehicle in the same condition as received, with the agreed fuel level</li>
+        <li>Report any accidents or damage to the Partner and RentalHub immediately</li>
+      </ul>
+
+      <h3>5.2 Age Requirement</h3>
+      <p>Riders must be at least 18 years of age. For vehicles above 350cc, some Partners may require a minimum age of 21. Check individual listings for requirements.</p>
+
+      <h2>6. Bookings and Cancellations</h2>
+      <h3>6.1 Booking Confirmation</h3>
+      <p>A booking is confirmed only when payment is processed successfully and you receive a confirmation notification. Unconfirmed bookings may be released without notice.</p>
+
+      <h3>6.2 Cancellation Policy</h3>
+      <ul>
+        <li><strong>24+ hours before start time:</strong> Full refund of rental amount</li>
+        <li><strong>12–24 hours before start time:</strong> 80% refund</li>
+        <li><strong>Less than 12 hours before start time:</strong> 50% refund</li>
+        <li><strong>No-show:</strong> No refund</li>
+      </ul>
+      <p>Individual Partner cancellation policies may differ from the above. Check the listing for Partner-specific policies.</p>
+
+      <h3>6.3 Partner Cancellations</h3>
+      <p>If a Partner cancels a confirmed booking, the Rider will receive a full refund within 3–5 business days, and the Partner's performance rating will be affected.</p>
+
+      <h2>7. Payments</h2>
+      <p>All payments on RentalHub are processed through Razorpay, a PCI-DSS Level 1 certified payment gateway. We do not store card details on our servers. By making a payment, you agree to Razorpay's terms of service.</p>
+
+      <h2>8. Security Deposit</h2>
+      <p>Partners may require a refundable security deposit at the time of vehicle handover. The deposit amount is displayed on the listing page. Deposits are refunded within 24 hours of vehicle return, subject to a damage inspection. In the event of damage, the Partner may deduct repair costs from the deposit, subject to evidence review.</p>
+
+      <h2>9. Liability and Insurance</h2>
+      <h3>9.1 Platform Liability</h3>
+      <p>RentalHub is a marketplace platform and is not a party to rental agreements between Riders and Partners. To the maximum extent permitted by law, RentalHub is not liable for:</p>
+      <ul>
+        <li>Accidents, injuries, or damage during a rental period</li>
+        <li>Disputes between Riders and Partners</li>
+        <li>Vehicle quality, maintenance, or roadworthiness</li>
+        <li>Loss or theft of personal belongings</li>
+      </ul>
+
+      <h3>9.2 Insurance</h3>
+      <p>All vehicles listed on RentalHub must have valid third-party insurance as required by Indian law. RentalHub does not provide additional insurance coverage. Riders are advised to check individual listing insurance details and may purchase additional travel insurance independently.</p>
+
+      <h2>10. Prohibited Activities</h2>
+      <p>The following are strictly prohibited on RentalHub:</p>
+      <ul>
+        <li>Providing false or misleading information</li>
+        <li>Using the platform for unlawful purposes</li>
+        <li>Circumventing the platform to conduct off-platform transactions with Riders or Partners met through RentalHub</li>
+        <li>Damaging, misusing, or subletting rented vehicles</li>
+        <li>Harassing, threatening, or abusing other users</li>
+        <li>Listing vehicles without proper documentation</li>
+      </ul>
+      <p>Violation of these prohibitions may result in immediate account suspension and potential legal action.</p>
+
+      <h2>11. Dispute Resolution</h2>
+      <p>If a dispute arises between a Rider and a Partner:</p>
+      <ol>
+        <li>Both parties should first attempt to resolve the dispute directly within 24 hours</li>
+        <li>If unresolved, report the dispute to RentalHub at <a href={`mailto:${site.contact.email}`} style="color:var(--accent)">{site.contact.email}</a> within 48 hours of the incident</li>
+        <li>RentalHub will review the evidence submitted by both parties and issue a non-binding recommendation within 5 business days</li>
+        <li>RentalHub's decision on platform-level matters (refunds, account actions) is final</li>
+      </ol>
+
+      <h2>12. Governing Law</h2>
+      <p>These Terms are governed by the laws of India. Any disputes arising from these Terms or your use of RentalHub shall be subject to the exclusive jurisdiction of the courts of Pune, Maharashtra, India.</p>
+
+      <h2>13. Amendments</h2>
+      <p>We reserve the right to modify these Terms at any time. We will notify registered users of significant changes via email and will update the "Last updated" date above. Continued use of the platform after changes constitutes acceptance of the updated Terms.</p>
+
+      <h2>14. Contact</h2>
+      <p>For questions about these Terms, contact us at:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href={`mailto:${site.contact.email}`} style="color:var(--accent)">{site.contact.email}</a></li>
+        <li><strong>Company:</strong> {site.legal.companyName}</li>
+        <li><strong>Address:</strong> {site.contact.address}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>

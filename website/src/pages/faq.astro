@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import faq from '../data/faq.json';
+---
+
+<BaseLayout
+  title="FAQ — RentalHub Frequently Asked Questions"
+  description="Answers to common questions about renting bikes and cars, listing your fleet on RentalHub, payments, safety, and more."
+>
+
+<!-- Schema.org FAQPage -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faq.categories.flatMap(cat =>
+    cat.items.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": { "@type": "Answer", "text": item.a }
+    }))
+  )
+})} />
+
+<!-- Hero -->
+<section class="hero" style="min-height:45vh; padding-top:calc(var(--nav-h) + 4rem);">
+  <div class="container">
+    <div style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="hero-badge" style="margin:0 auto var(--space-xl);" data-reveal>
+        <span class="pulse-dot"></span>
+        Help Center
+      </div>
+      <h1 class="hero-title" data-reveal data-delay="100">Frequently Asked Questions</h1>
+      <p class="hero-sub" data-reveal data-delay="200">
+        Everything you need to know about renting on RentalHub — for riders and rental shop owners.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ by Category -->
+<section class="section">
+  <div class="container" style="max-width:860px; margin:0 auto;">
+
+    <!-- Category tabs -->
+    <div class="tab-group faq-tabs" data-reveal style="margin-bottom:var(--space-2xl);">
+      {faq.categories.map((cat, i) => (
+        <button class={`tab-btn ${i === 0 ? 'active' : ''}`} data-cat={cat.id} type="button">
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- FAQ Panels -->
+    {faq.categories.map((cat, catIdx) => (
+      <div class="faq-panel" id={`panel-${cat.id}`} style={catIdx !== 0 ? 'display:none' : ''} data-reveal>
+        <div class="accordion">
+          {cat.items.map((item, i) => (
+            <div class="accordion-item" id={`${cat.id}-${i}`}>
+              <button class="accordion-header" aria-expanded="false" aria-controls={`body-${cat.id}-${i}`}>
+                <span class="accordion-question">{item.q}</span>
+                <span class="accordion-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="accordion-body" id={`body-${cat.id}-${i}`} role="region">
+                <p class="accordion-answer">{item.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <!-- Still need help -->
+    <div style="text-align:center; margin-top:var(--space-3xl); padding:var(--space-2xl); background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl);" data-reveal>
+      <h3 style="margin-bottom:var(--space-md);">Still have questions?</h3>
+      <p style="color:var(--text-secondary); margin-bottom:var(--space-xl);">Can't find what you're looking for? Our team is here to help.</p>
+      <div style="display:flex; gap:var(--space-md); justify-content:center; flex-wrap:wrap;">
+        <a href="/contact" class="btn btn-primary">Contact Us</a>
+        <a href="mailto:contact@rentalhub.in" class="btn btn-secondary">Email Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll('.faq-tabs .tab-btn');
+  const panels = document.querySelectorAll('.faq-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = (tab as HTMLElement).dataset.cat!;
+      panels.forEach(p => {
+        (p as HTMLElement).style.display = p.id === `panel-${cat}` ? '' : 'none';
+      });
+    });
+  });
+
+  // Accordion
+  document.querySelectorAll('.accordion-header').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.accordion-item')!;
+      const isOpen = item.classList.contains('open');
+      // Only close siblings in same panel
+      item.closest('.accordion')?.querySelectorAll('.accordion-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.accordion-header')?.setAttribute('aria-expanded','false');
+      });
+      if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+    });
+  });
+</script>

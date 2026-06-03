@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import site from '../data/site.json';
+
+const team = [
+  { name: "Coming Soon", role: "Co-founder & CEO", bio: "Building India's largest vehicle rental network. Passionate about making mobility accessible to everyone.", avatar: "CS" },
+  { name: "Coming Soon", role: "Co-founder & CTO", bio: "Building the technology that powers reliable, scalable, and trustworthy rental experiences across India.", avatar: "CS" },
+  { name: "Coming Soon", role: "Head of Growth", bio: "Scaling our partner network and ensuring every rental shop gets the customers they deserve.", avatar: "CS" },
+];
+
+const values = [
+  { icon: "🤝", title: "Trust First", desc: "Every shop is verified. Every transaction is secure. Trust is the foundation of every rental on our platform." },
+  { icon: "⚡", title: "Technology-Driven", desc: "We build tools that make running a rental business easier. Real-time dashboards, instant notifications, seamless payments." },
+  { icon: "🌏", title: "Built for India", desc: "From Manali to Kochi, from metros to tier-2 cities — we're building for the diversity and scale of India." },
+  { icon: "🔓", title: "No Lock-in", desc: "We earn your trust every day. No exclusivity contracts, no penalties, no minimum commitments. Your business, your rules." },
+];
+
+const milestones = [
+  { date: "Early 2026", title: "RentalHub Founded", desc: "Started in Pune with a mission to defeat overpriced, lock-in-heavy rental aggregators." },
+  { date: "Mid 2026", title: "First 100 Partners", desc: "Onboarded 100 rental shops across Pune and Mumbai within 3 months of launch." },
+  { date: "Late 2026", title: "Pan-India Expansion", desc: "Expanded to Bangalore, Hyderabad, Delhi, Goa, and Manali. 500+ partners live." },
+  { date: "2027 Goal", title: "50 Cities · ₹100Cr GMV", desc: "Becoming the default platform for bike and car rentals across India." },
+];
+---
+
+<BaseLayout
+  title="About RentalHub — India's Vehicle Rental Network"
+  description="Learn about RentalHub's mission to make vehicle rentals accessible, affordable, and trustworthy in every Indian city. Our story, team, and values."
+>
+
+<!-- Hero -->
+<section class="hero" style="min-height: 60vh; padding-top: calc(var(--nav-h) + 4rem);">
+  <div class="container">
+    <div class="hero-inner" style="max-width:900px; text-align:center; margin:0 auto;">
+      <div class="hero-badge" style="margin:0 auto var(--space-xl);" data-reveal>
+        <span class="pulse-dot"></span>
+        Our Story
+      </div>
+      <h1 class="hero-title" data-reveal data-delay="100">
+        Building India's Largest<br/>Vehicle Rental Network
+      </h1>
+      <p class="hero-sub" data-reveal data-delay="200" style="max-width:600px; margin: 0 auto var(--space-2xl);">
+        We started because we were frustrated. Good rental shops existed everywhere — but customers couldn't find them, and shops were stuck paying 30% commissions to aggregators that didn't care about them.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Mission -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3xl); align-items: center;" class="about-mission">
+      <div data-reveal>
+        <div class="section-label">Our Mission</div>
+        <h2>Make vehicle rentals accessible to every Indian</h2>
+        <p style="font-size:1.05rem; margin-top: var(--space-lg); line-height:1.8;">
+          Whether you're a student who needs a scooter to commute, a traveller who wants a Royal Enfield for Spiti, or a family that needs a car for a weekend trip — you should be able to find a trusted rental shop near you in minutes.
+        </p>
+        <p style="margin-top: var(--space-md); line-height:1.8;">
+          And for the rental shop owners — the entrepreneurs running 5, 20, or 50 bikes — they deserve a platform that actually works for them. Not one that takes 30% and treats them like suppliers.
+        </p>
+      </div>
+      <div data-reveal data-delay="200">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: var(--space-2xl); text-align:center;">
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; color: var(--accent); line-height:1;">8%</div>
+          <p style="color: var(--text-muted); margin-top: 0.5rem; margin-bottom: var(--space-xl);">Commission — lowest in the market</p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-lg); text-align:left;">
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; color:var(--text-primary);">500+</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Rental Partners</div>
+            </div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; color:var(--text-primary);">50+</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Cities</div>
+            </div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; color:var(--text-primary);">10K+</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Vehicles Listed</div>
+            </div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; color:var(--text-primary);">4.8★</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Avg Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="section">
+  <div class="container">
+    <div class="section-header centered" data-reveal>
+      <div class="section-label">What We Stand For</div>
+      <h2>Our Values</h2>
+    </div>
+    <div class="grid-2" data-reveal>
+      {values.map(v => (
+        <div class="usp-card">
+          <div class="usp-icon" style="font-size:1.5rem; background:var(--accent-subtle);">{v.icon}</div>
+          <h3>{v.title}</h3>
+          <p>{v.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="section-header centered" data-reveal>
+      <div class="section-label">The Team</div>
+      <h2>People Behind RentalHub</h2>
+      <p>A small team with a big vision. We're growing — <a href="/contact" style="color:var(--accent)">join us</a>.</p>
+    </div>
+    <div class="team-grid" data-reveal>
+      {team.map(member => (
+        <div class="team-card card" style="padding: var(--space-2xl);">
+          <div class="team-avatar">{member.avatar}</div>
+          <div class="team-name">{member.name}</div>
+          <div class="team-role">{member.role}</div>
+          <p class="team-bio">{member.bio}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section class="section">
+  <div class="container">
+    <div style="max-width: 700px; margin: 0 auto;">
+      <div class="section-header" data-reveal>
+        <div class="section-label">Our Journey</div>
+        <h2>Milestones</h2>
+      </div>
+      <div class="timeline" data-reveal>
+        {milestones.map(m => (
+          <div class="timeline-item">
+            <div class="timeline-date">{m.date}</div>
+            <div class="timeline-title">{m.title}</div>
+            <div class="timeline-desc">{m.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <div class="cta-banner" data-reveal>
+      <h2>Want to Be Part of This?</h2>
+      <p>Register your rental shop today and join 500+ partners building the future of vehicle rentals in India.</p>
+      <a href="/register" class="btn btn-lg" style="background:#fff; color:#191970;">Register Your Shop — Free</a>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+  @media (max-width: 900px) {
+    .about-mission { grid-template-columns: 1fr !important; }
+  }
+</style>

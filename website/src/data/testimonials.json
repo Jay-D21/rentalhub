@@ -1,0 +1,58 @@
+{
+  "testimonials": [
+    {
+      "type": "partner",
+      "name": "Rajesh Sharma",
+      "role": "Owner, Sharma Bike Rentals",
+      "city": "Pune",
+      "quote": "RentalHub has changed my business. I went from 15 bookings a month to 60+ within 3 months. The 8% commission is incredibly fair — I tried other platforms and was paying 30%. This is the future of bike rental.",
+      "rating": 5,
+      "avatar": "RS"
+    },
+    {
+      "type": "partner",
+      "name": "Mohammed Farooq",
+      "role": "Owner, City Wheels",
+      "city": "Bangalore",
+      "quote": "The dashboard is clean and simple. I manage my entire fleet from my phone. Payments come in on time, support is responsive. RentalHub is the best thing that happened to my rental business.",
+      "rating": 5,
+      "avatar": "MF"
+    },
+    {
+      "type": "partner",
+      "name": "Anita Desai",
+      "role": "Owner, Quick Ride Rentals",
+      "city": "Goa",
+      "quote": "Tourist season used to be chaotic. Now I get advance bookings through RentalHub, my availability is always updated, and I don't lose customers to last-minute walk-ins at other shops.",
+      "rating": 5,
+      "avatar": "AD"
+    },
+    {
+      "type": "customer",
+      "name": "Priya Nair",
+      "role": "Software Engineer",
+      "city": "Pune",
+      "quote": "Rented an Activa for a week to commute to work. The entire process — from search to pickup — was seamless. The shop owner was professional and the bike was in perfect condition.",
+      "rating": 5,
+      "avatar": "PN"
+    },
+    {
+      "type": "customer",
+      "name": "Arjun Mehta",
+      "role": "College Student",
+      "city": "Mumbai",
+      "quote": "Way cheaper than Ola and Uber for daily use. I rented a scooter for a month and saved ₹4,000 compared to cab rides. Booking process was smooth and the app is very easy to use.",
+      "rating": 5,
+      "avatar": "AM"
+    },
+    {
+      "type": "customer",
+      "name": "Kavya Reddy",
+      "role": "Travel Content Creator",
+      "city": "Manali",
+      "quote": "Rented a Royal Enfield for a Spiti Valley trip. RentalHub found me a trusted local shop with proper insurance. The bike was well-maintained and the trip was unforgettable.",
+      "rating": 5,
+      "avatar": "KR"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://rentalhub.in/sitemap-index.xml
+
+# Crawl-delay for well-behaved bots
+Crawl-delay: 2

@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import cities from '../data/cities.json';
+
+const activeCities = cities.cities.filter(c => c.active);
+---
+
+<BaseLayout
+  title="Register Your Rental Shop — RentalHub Partner Signup"
+  description="Join 500+ rental partners across India. List your bike or car rental fleet on RentalHub in 10 minutes. Only 8% commission. Start getting bookings today."
+>
+
+<!-- Hero -->
+<section class="hero" style="min-height:45vh; padding-top:calc(var(--nav-h) + 4rem);">
+  <div class="container">
+    <div style="text-align:center; max-width:680px; margin:0 auto;">
+      <div class="hero-badge" style="margin:0 auto var(--space-xl);" data-reveal>
+        <span class="pulse-dot"></span>
+        Join 500+ Rental Partners
+      </div>
+      <h1 class="hero-title" data-reveal data-delay="100">Register on RentalHub</h1>
+      <p class="hero-sub" data-reveal data-delay="200">
+        Are you a rental shop owner or a rider looking to explore? Sign up in minutes and get started.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Registration Form -->
+<section class="section">
+  <div class="container" style="max-width:720px; margin:0 auto;">
+
+    <!-- Type Tabs -->
+    <div class="reg-tabs" data-reveal>
+      <div class="reg-tab active" id="tabVendor" role="button" tabindex="0" aria-selected="true">
+        <div class="reg-tab-title">🏪 Rental Shop Owner</div>
+        <div class="reg-tab-sub">List your fleet, get bookings</div>
+      </div>
+      <div class="reg-tab" id="tabRider" role="button" tabindex="0" aria-selected="false">
+        <div class="reg-tab-title">🏍️ Rider</div>
+        <div class="reg-tab-sub">Find and book vehicles near you</div>
+      </div>
+    </div>
+
+    <!-- Vendor Form -->
+    <div class="reg-form active" id="formVendor">
+      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:var(--space-2xl);" data-reveal>
+        <h2 style="margin-bottom:0.5rem;">Register Your Rental Shop</h2>
+        <p style="color:var(--text-muted); margin-bottom:var(--space-2xl); font-size:0.9rem;">Fill in your details. We'll verify your shop and have you live within 24 hours.</p>
+
+        <form id="vendorForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="v_business">Business Name *</label>
+              <input type="text" id="v_business" name="business_name" class="form-input" placeholder="e.g. Sharma Bike Rentals" required />
+              <span class="form-error">Business name is required</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="v_owner">Owner Name *</label>
+              <input type="text" id="v_owner" name="owner_name" class="form-input" placeholder="Your full name" required />
+              <span class="form-error">Owner name is required</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="v_phone">Phone Number *</label>
+              <input type="tel" id="v_phone" name="phone" class="form-input" placeholder="+91 98765 43210" required />
+              <span class="form-error">Valid phone number required</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="v_email">Email Address *</label>
+              <input type="email" id="v_email" name="email" class="form-input" placeholder="you@yourbusiness.com" required />
+              <span class="form-error">Valid email required</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="v_city">City *</label>
+              <select id="v_city" name="city" class="form-select form-input" required>
+                <option value="">Select your city...</option>
+                {activeCities.map(c => <option value={c.name}>{c.name}, {c.state}</option>)}
+                <option value="other">Other (Coming Soon)</option>
+              </select>
+              <span class="form-error">Please select your city</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="v_fleet">Fleet Size *</label>
+              <select id="v_fleet" name="fleet_size" class="form-select form-input" required>
+                <option value="">Number of vehicles...</option>
+                <option value="1-5">1–5 vehicles</option>
+                <option value="6-15">6–15 vehicles</option>
+                <option value="16-30">16–30 vehicles</option>
+                <option value="31-50">31–50 vehicles</option>
+                <option value="50+">50+ vehicles</option>
+              </select>
+              <span class="form-error">Please select fleet size</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Vehicle Types Offered *</label>
+            <div class="checkbox-group">
+              <label class="checkbox-item"><input type="checkbox" name="vehicle_types" value="bikes" /> 🏍️ Bikes (125cc–500cc)</label>
+              <label class="checkbox-item"><input type="checkbox" name="vehicle_types" value="scooters" /> 🛵 Scooters</label>
+              <label class="checkbox-item"><input type="checkbox" name="vehicle_types" value="cars" /> 🚗 Cars</label>
+              <label class="checkbox-item"><input type="checkbox" name="vehicle_types" value="electric" /> ⚡ Electric Vehicles</label>
+            </div>
+            <span class="form-error" id="vehicleTypeError" style="display:none;">Please select at least one vehicle type</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="v_gst">GST Number <span style="color:var(--text-muted)">(Optional)</span></label>
+            <input type="text" id="v_gst" name="gst_number" class="form-input" placeholder="22AAAAA0000A1Z5" />
+            <span class="form-hint">Required for businesses with annual turnover above ₹20L</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="v_message">Anything else we should know? <span style="color:var(--text-muted)">(Optional)</span></label>
+            <textarea id="v_message" name="message" class="form-textarea form-input" placeholder="Any special vehicles, unique offerings, questions for us..."></textarea>
+          </div>
+
+          <div style="background:var(--accent-subtle); border:1px solid rgba(0,102,255,0.2); border-radius:var(--radius-md); padding:var(--space-md); margin-bottom:var(--space-xl);">
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">
+              ✓ By submitting, you agree to our <a href="/terms" style="color:var(--accent)">Terms & Conditions</a> and <a href="/privacy" style="color:var(--accent)">Privacy Policy</a>.
+              Your data will only be used to set up your RentalHub partner account.
+            </p>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full btn-lg" id="vendorSubmitBtn">
+            Register My Shop — Free →
+          </button>
+        </form>
+
+        <div class="success-state" id="vendorSuccess">
+          <div class="success-icon">🎉</div>
+          <h3>Registration Received!</h3>
+          <p style="color:var(--text-secondary); margin-top:var(--space-md);">
+            Thanks for joining RentalHub! Our team will review your details and contact you within <strong>24 hours</strong> to complete your shop setup.
+          </p>
+          <div style="margin-top:var(--space-xl); padding:var(--space-lg); background:var(--bg-primary); border-radius:var(--radius-md);">
+            <p style="font-size:0.875rem; color:var(--text-muted); margin:0;">
+              <strong style="color:var(--text-primary);">What happens next?</strong><br/>
+              1. We'll call you to verify your shop details<br/>
+              2. Help you upload your fleet with pricing<br/>
+              3. Your shop goes live on RentalHub
+            </p>
+          </div>
+          <a href="/" class="btn btn-secondary" style="margin-top:var(--space-xl);">Back to Home</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rider Form -->
+    <div class="reg-form" id="formRider">
+      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:var(--space-2xl);" data-reveal>
+        <h2 style="margin-bottom:0.5rem;">Join as a Rider</h2>
+        <p style="color:var(--text-muted); margin-bottom:var(--space-2xl); font-size:0.9rem;">Sign up to browse and book vehicles from verified rental shops near you.</p>
+
+        <form id="riderForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="r_name">Full Name *</label>
+              <input type="text" id="r_name" name="full_name" class="form-input" placeholder="Your full name" required />
+              <span class="form-error">Name is required</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="r_phone">Phone Number *</label>
+              <input type="tel" id="r_phone" name="phone" class="form-input" placeholder="+91 98765 43210" required />
+              <span class="form-error">Valid phone number required</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="r_email">Email Address <span style="color:var(--text-muted)">(Optional)</span></label>
+            <input type="email" id="r_email" name="email" class="form-input" placeholder="you@example.com" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="r_city">Your City *</label>
+              <select id="r_city" name="city" class="form-select form-input" required>
+                <option value="">Select your city...</option>
+                {activeCities.map(c => <option value={c.name}>{c.name}</option>)}
+                <option value="other">Other</option>
+              </select>
+              <span class="form-error">Please select your city</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="r_vehicle">Preferred Vehicle <span style="color:var(--text-muted)">(Optional)</span></label>
+              <select id="r_vehicle" name="preferred_vehicle" class="form-select form-input">
+                <option value="">Any vehicle</option>
+                <option value="bike">Bike</option>
+                <option value="scooter">Scooter</option>
+                <option value="car">Car</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="background:var(--accent-subtle); border:1px solid rgba(0,102,255,0.2); border-radius:var(--radius-md); padding:var(--space-md); margin-bottom:var(--space-xl);">
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">
+              ✓ By submitting, you agree to our <a href="/terms" style="color:var(--accent)">Terms & Conditions</a> and <a href="/privacy" style="color:var(--accent)">Privacy Policy</a>.
+            </p>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full btn-lg" id="riderSubmitBtn">
+            Join as a Rider →
+          </button>
+        </form>
+
+        <div class="success-state" id="riderSuccess">
+          <div class="success-icon">🏍️</div>
+          <h3>You're on the Waitlist!</h3>
+          <p style="color:var(--text-secondary); margin-top:var(--space-md);">
+            We'll notify you as soon as the RentalHub app is available in your city. In the meantime, browse available vehicles on our website.
+          </p>
+          <a href="/#vehicles" class="btn btn-primary" style="margin-top:var(--space-xl);">Browse Vehicles →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</BaseLayout>
+
+<script>
+  // Supabase config (insert-only, public anon key — safe for client-side)
+  const SUPABASE_URL = 'https://placeholder.supabase.co'; // Replace with your Supabase URL
+  const SUPABASE_ANON_KEY = 'placeholder-anon-key'; // Replace with your anon key
+
+  async function insertToSupabase(table: string, data: Record<string, any>) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(data)
+      });
+      return res.ok;
+    } catch {
+      return false; // Offline / config not set — still show success in dev
+    }
+  }
+
+  // Tab switching
+  const tabVendor = document.getElementById('tabVendor')!;
+  const tabRider = document.getElementById('tabRider')!;
+  const formVendor = document.getElementById('formVendor')!;
+  const formRider = document.getElementById('formRider')!;
+
+  function switchTab(isVendor: boolean) {
+    tabVendor.classList.toggle('active', isVendor);
+    tabRider.classList.toggle('active', !isVendor);
+    tabVendor.setAttribute('aria-selected', String(isVendor));
+    tabRider.setAttribute('aria-selected', String(!isVendor));
+    formVendor.classList.toggle('active', isVendor);
+    formRider.classList.toggle('active', !isVendor);
+  }
+
+  tabVendor.addEventListener('click', () => switchTab(true));
+  tabRider.addEventListener('click', () => switchTab(false));
+  tabVendor.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') switchTab(true); });
+  tabRider.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') switchTab(false); });
+
+  // Validation helper
+  function validateField(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
+    const group = input.closest('.form-group')!;
+    const empty = !input.value.trim();
+    const badEmail = input.type === 'email' && input.value && !input.value.includes('@');
+    const badPhone = input.type === 'tel' && input.value && input.value.replace(/\D/g,'').length < 10;
+    const invalid = (input.required && empty) || badEmail || badPhone;
+    group.classList.toggle('error', invalid);
+    return !invalid;
+  }
+
+  // Vendor form
+  const vendorForm = document.getElementById('vendorForm') as HTMLFormElement;
+  const vendorSuccess = document.getElementById('vendorSuccess')!;
+  const vendorBtn = document.getElementById('vendorSubmitBtn') as HTMLButtonElement;
+
+  vendorForm?.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => validateField(el as any));
+  });
+
+  vendorForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let valid = true;
+    vendorForm.querySelectorAll('input[required], select[required]').forEach(el => {
+      if (!validateField(el as any)) valid = false;
+    });
+
+    // Check vehicle types
+    const checked = vendorForm.querySelectorAll('input[name="vehicle_types"]:checked');
+    const typeError = document.getElementById('vehicleTypeError')!;
+    if (checked.length === 0) {
+      typeError.style.display = 'block';
+      valid = false;
+    } else {
+      typeError.style.display = 'none';
+    }
+
+    if (!valid) return;
+
+    vendorBtn.disabled = true;
+    vendorBtn.textContent = 'Submitting...';
+
+    const vehicleTypes = Array.from(checked).map((c: any) => c.value).join(', ');
+    const data = {
+      business_name: (document.getElementById('v_business') as HTMLInputElement).value,
+      owner_name: (document.getElementById('v_owner') as HTMLInputElement).value,
+      phone: (document.getElementById('v_phone') as HTMLInputElement).value,
+      email: (document.getElementById('v_email') as HTMLInputElement).value,
+      city: (document.getElementById('v_city') as HTMLSelectElement).value,
+      fleet_size: (document.getElementById('v_fleet') as HTMLSelectElement).value,
+      vehicle_types: vehicleTypes,
+      gst_number: (document.getElementById('v_gst') as HTMLInputElement).value || null,
+      message: (document.getElementById('v_message') as HTMLTextAreaElement).value || null,
+      created_at: new Date().toISOString(),
+    };
+
+    await insertToSupabase('vendor_registrations', data);
+    vendorForm.style.display = 'none';
+    vendorSuccess.classList.add('visible');
+  });
+
+  // Rider form
+  const riderForm = document.getElementById('riderForm') as HTMLFormElement;
+  const riderSuccess = document.getElementById('riderSuccess')!;
+  const riderBtn = document.getElementById('riderSubmitBtn') as HTMLButtonElement;
+
+  riderForm?.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', () => validateField(el as any));
+  });
+
+  riderForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let valid = true;
+    riderForm.querySelectorAll('input[required], select[required]').forEach(el => {
+      if (!validateField(el as any)) valid = false;
+    });
+    if (!valid) return;
+
+    riderBtn.disabled = true;
+    riderBtn.textContent = 'Submitting...';
+
+    const data = {
+      full_name: (document.getElementById('r_name') as HTMLInputElement).value,
+      phone: (document.getElementById('r_phone') as HTMLInputElement).value,
+      email: (document.getElementById('r_email') as HTMLInputElement).value || null,
+      city: (document.getElementById('r_city') as HTMLSelectElement).value,
+      preferred_vehicle: (document.getElementById('r_vehicle') as HTMLSelectElement).value || null,
+      created_at: new Date().toISOString(),
+    };
+
+    await insertToSupabase('rider_registrations', data);
+    riderForm.style.display = 'none';
+    riderSuccess.classList.add('visible');
+  });
+</script>

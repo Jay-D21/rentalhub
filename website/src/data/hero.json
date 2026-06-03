@@ -1,0 +1,21 @@
+{
+  "headline": "Rent Bikes & Cars from Trusted Shops Near You",
+  "subheadline": "Browse verified rental shops across India. Book in minutes. Ride with confidence.",
+  "searchPlaceholder": "Where do you want to ride?",
+  "cta": {
+    "primary": { "text": "Find Vehicles", "href": "#vehicles" },
+    "secondary": { "text": "Register Your Shop", "href": "/register" }
+  },
+  "badge": "Now Live · 500+ Partners Across India",
+  "partnerSection": {
+    "headline": "Own a Rental Shop?",
+    "subheadline": "List your fleet on RentalHub and start getting bookings from thousands of customers. Only 8% commission — 3x lower than competitors.",
+    "cta": { "text": "Register as Partner", "href": "/register" },
+    "points": [
+      "10-minute digital signup",
+      "No exclusivity contracts",
+      "Real-time booking dashboard",
+      "Instant payment settlements"
+    ]
+  }
+}

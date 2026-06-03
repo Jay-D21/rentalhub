@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "number": "01",
+      "icon": "search",
+      "title": "Search Near You",
+      "description": "Enter your city and choose your vehicle type. Browse verified rental shops with real availability, transparent pricing, and genuine reviews."
+    },
+    {
+      "number": "02",
+      "icon": "calendar",
+      "title": "Book Instantly",
+      "description": "Select your dates, confirm your booking with secure online payment, and get instant confirmation. No paperwork, no waiting."
+    },
+    {
+      "number": "03",
+      "icon": "key",
+      "title": "Pick Up & Ride",
+      "description": "Head to the rental shop with your licence. Quick handover process. Hit the road and enjoy your ride. Return when done."
+    }
+  ]
+}

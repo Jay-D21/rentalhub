@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import pricing from '../data/pricing.json';
+import faq from '../data/faq.json';
+
+const partnerFaq = faq.categories.find(c => c.id === 'partners')?.items.slice(0, 4) || [];
+---
+
+<BaseLayout
+  title="Pricing — RentalHub Plans for Rental Shop Owners"
+  description="Free to start. List your vehicles, get bookings, grow your rental business. Plans from ₹0 to Enterprise. Only 8% commission per booking."
+>
+
+<!-- Hero -->
+<section class="hero" style="min-height:50vh; padding-top:calc(var(--nav-h) + 4rem);">
+  <div class="container">
+    <div style="text-align:center; max-width:700px; margin:0 auto;">
+      <div class="hero-badge" style="margin: 0 auto var(--space-xl);" data-reveal>
+        <span class="pulse-dot"></span>
+        Transparent Pricing
+      </div>
+      <h1 class="hero-title" data-reveal data-delay="100">
+        Simple, Fair Pricing for Every Shop
+      </h1>
+      <p class="hero-sub" data-reveal data-delay="200">
+        Start free. Scale as you grow. Only pay {pricing.commission.rate} on successful bookings — {pricing.commission.comparisonNote}.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Commission Banner -->
+<section style="background: var(--bg-secondary); padding: var(--space-xl) 0;">
+  <div class="container">
+    <div style="display:flex; align-items:center; justify-content:center; gap:var(--space-2xl); flex-wrap:wrap; text-align:center;" data-reveal>
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:3rem; font-weight:700; color:var(--brand-red);">{pricing.commission.rate}</div>
+        <div style="font-size:0.875rem; color:var(--text-muted);">Commission per booking</div>
+      </div>
+      <div style="font-size:2rem; color:var(--text-muted);">·</div>
+      <div>
+        <div style="font-size:1rem; color:var(--text-secondary);">On a ₹1,000 booking</div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; color:var(--text-primary);">You keep ₹920</div>
+      </div>
+      <div style="font-size:2rem; color:var(--text-muted);">·</div>
+      <div>
+        <div style="font-size:1rem; color:var(--text-secondary);">vs Royal Brothers</div>
+        <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; color:var(--text-primary);">25–35% commission</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Cards -->
+<section class="section">
+  <div class="container">
+    <div class="pricing-grid" data-reveal>
+      {pricing.plans.map(plan => (
+        <div class={`pricing-card ${plan.highlighted ? 'highlighted' : ''}`}>
+          {plan.badge && <div class="pricing-badge">{plan.badge}</div>}
+          <div class="pricing-name">{plan.name}</div>
+          <div class="pricing-price">
+            {plan.price}{plan.period && <small>{plan.period}</small>}
+          </div>
+          <p class="pricing-desc">{plan.description}</p>
+          <ul class="pricing-features">
+            {plan.features.map(feature => (
+              <li class={`pricing-feature ${!feature.included ? 'excluded' : ''}`}>
+                {feature.included
+                  ? <svg class="check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  : <svg class="cross" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                }
+                {feature.text}
+              </li>
+            ))}
+          </ul>
+          <a href={plan.cta.href} class={`btn btn-full ${plan.highlighted ? 'btn-primary' : 'btn-secondary'}`}>
+            {plan.cta.text}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- Note -->
+    <div style="text-align:center; margin-top:var(--space-2xl); color:var(--text-muted); font-size:0.875rem;" data-reveal>
+      <p>All plans include {pricing.commission.rate} {pricing.commission.note}. No setup fees. No hidden charges. Cancel anytime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Feature comparison table -->
+<section class="section" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="section-header centered" data-reveal>
+      <div class="section-label">Compare</div>
+      <h2>Full Feature Comparison</h2>
+    </div>
+    <div style="overflow-x:auto;" data-reveal>
+      <table style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--border);">
+            <th style="text-align:left; padding:var(--space-md); color:var(--text-muted); font-weight:600;">Feature</th>
+            {pricing.plans.map(p => (
+              <th style="text-align:center; padding:var(--space-md); font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--text-primary);">
+                {p.name}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {pricing.plans[0].features.map((f, i) => (
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:var(--space-md); color:var(--text-secondary);">{f.text}</td>
+              {pricing.plans.map(plan => (
+                <td style="text-align:center; padding:var(--space-md);">
+                  {plan.features[i]?.included
+                    ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" style="opacity:0.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  }
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Partner FAQ -->
+<section class="section">
+  <div class="container" style="max-width:800px; margin:0 auto;">
+    <div class="section-header centered" data-reveal>
+      <div class="section-label">Questions</div>
+      <h2>Partner FAQs</h2>
+    </div>
+    <div class="accordion" data-reveal>
+      {partnerFaq.map((item, i) => (
+        <div class="accordion-item">
+          <button class="accordion-header" aria-expanded="false">
+            <span class="accordion-question">{item.q}</span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="accordion-body">
+            <p class="accordion-answer">{item.a}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div style="text-align:center; margin-top:var(--space-xl);" data-reveal>
+      <a href="/faq" class="btn btn-secondary">See All FAQs →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="cta-banner" data-reveal>
+      <h2>Start Free Today</h2>
+      <p>No credit card required. List up to 5 vehicles, get your first bookings, then upgrade when you're ready.</p>
+      <a href="/register" class="btn btn-lg" style="background:#fff; color:#191970;">Register Your Shop — Free</a>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<script>
+  document.querySelectorAll('.accordion-header').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.accordion-item')!;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+      document.querySelectorAll('.accordion-header').forEach(b => b.setAttribute('aria-expanded','false'));
+      if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+    });
+  });
+</script>

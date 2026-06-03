@@ -1,0 +1,19 @@
+{
+  "cities": [
+    { "name": "Pune", "state": "Maharashtra", "active": true, "partners": 120 },
+    { "name": "Mumbai", "state": "Maharashtra", "active": true, "partners": 85 },
+    { "name": "Bangalore", "state": "Karnataka", "active": true, "partners": 95 },
+    { "name": "Hyderabad", "state": "Telangana", "active": true, "partners": 60 },
+    { "name": "Delhi", "state": "Delhi NCR", "active": true, "partners": 70 },
+    { "name": "Chennai", "state": "Tamil Nadu", "active": false, "partners": 0 },
+    { "name": "Goa", "state": "Goa", "active": true, "partners": 45 },
+    { "name": "Jaipur", "state": "Rajasthan", "active": false, "partners": 0 },
+    { "name": "Ahmedabad", "state": "Gujarat", "active": false, "partners": 0 },
+    { "name": "Kolkata", "state": "West Bengal", "active": false, "partners": 0 },
+    { "name": "Chandigarh", "state": "Punjab", "active": false, "partners": 0 },
+    { "name": "Kochi", "state": "Kerala", "active": false, "partners": 0 },
+    { "name": "Manali", "state": "Himachal Pradesh", "active": true, "partners": 30 },
+    { "name": "Coimbatore", "state": "Tamil Nadu", "active": false, "partners": 0 },
+    { "name": "Surat", "state": "Gujarat", "active": false, "partners": 0 }
+  ]
+}

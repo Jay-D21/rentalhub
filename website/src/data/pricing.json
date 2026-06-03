@@ -1,0 +1,82 @@
+{
+  "plans": [
+    {
+      "name": "Starter",
+      "price": "Free",
+      "period": "",
+      "description": "Perfect for new rental shops starting out",
+      "highlighted": false,
+      "cta": { "text": "Start Free", "href": "/register" },
+      "features": [
+        { "text": "Up to 5 vehicles listed", "included": true },
+        { "text": "Basic booking dashboard", "included": true },
+        { "text": "Email support", "included": true },
+        { "text": "Standard listing placement", "included": true },
+        { "text": "Analytics dashboard", "included": false },
+        { "text": "Priority placement", "included": false },
+        { "text": "Dedicated account manager", "included": false },
+        { "text": "API access", "included": false }
+      ]
+    },
+    {
+      "name": "Growth",
+      "price": "₹999",
+      "period": "/month",
+      "description": "For growing shops that want more visibility",
+      "highlighted": true,
+      "badge": "Most Popular",
+      "cta": { "text": "Start Growing", "href": "/register" },
+      "features": [
+        { "text": "Up to 25 vehicles listed", "included": true },
+        { "text": "Full booking dashboard", "included": true },
+        { "text": "Priority email & chat support", "included": true },
+        { "text": "Featured listing placement", "included": true },
+        { "text": "Analytics dashboard", "included": true },
+        { "text": "Priority placement", "included": true },
+        { "text": "Dedicated account manager", "included": false },
+        { "text": "API access", "included": false }
+      ]
+    },
+    {
+      "name": "Pro",
+      "price": "₹2,499",
+      "period": "/month",
+      "description": "For established shops scaling fast",
+      "highlighted": false,
+      "cta": { "text": "Go Pro", "href": "/register" },
+      "features": [
+        { "text": "Unlimited vehicles listed", "included": true },
+        { "text": "Advanced dashboard + reports", "included": true },
+        { "text": "24/7 priority support", "included": true },
+        { "text": "Top listing placement", "included": true },
+        { "text": "Advanced analytics + exports", "included": true },
+        { "text": "Priority placement", "included": true },
+        { "text": "Dedicated account manager", "included": true },
+        { "text": "API access", "included": false }
+      ]
+    },
+    {
+      "name": "Enterprise",
+      "price": "Custom",
+      "period": "",
+      "description": "For franchise chains and large fleets",
+      "highlighted": false,
+      "cta": { "text": "Contact Sales", "href": "/contact" },
+      "features": [
+        { "text": "Unlimited vehicles listed", "included": true },
+        { "text": "White-label dashboard option", "included": true },
+        { "text": "SLA-backed support", "included": true },
+        { "text": "Custom placement strategy", "included": true },
+        { "text": "Custom analytics & BI", "included": true },
+        { "text": "Priority placement", "included": true },
+        { "text": "Dedicated account team", "included": true },
+        { "text": "Full API access", "included": true }
+      ]
+    }
+  ],
+  "commission": {
+    "rate": "8%",
+    "note": "per successful booking, across all plans",
+    "comparisonNote": "Competitors charge 25–35%"
+  }
+}

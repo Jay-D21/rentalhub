@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import site from '../data/site.json';
+import cities from '../data/cities.json';
+---
+
+<BaseLayout
+  title="Contact RentalHub — Get in Touch"
+  description="Have questions? Contact the RentalHub team. Email, phone, and office in Pune. We typically respond within a few hours."
+>
+
+<!-- Schema.org LocalBusiness -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": site.brand.name,
+  "description": site.brand.description,
+  "url": site.seo.siteUrl,
+  "telephone": site.contact.phone,
+  "email": site.contact.email,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": site.contact.address,
+    "addressCountry": "IN"
+  },
+  "openingHours": "Mo-Sa 09:00-19:00"
+})} />
+
+<!-- Hero -->
+<section class="hero" style="min-height:45vh; padding-top:calc(var(--nav-h) + 4rem);">
+  <div class="container">
+    <div style="max-width:600px;">
+      <div class="hero-badge" data-reveal>
+        <span class="pulse-dot"></span>
+        We'd Love to Hear From You
+      </div>
+      <h1 class="hero-title" data-reveal data-delay="100">Get In Touch</h1>
+      <p class="hero-sub" data-reveal data-delay="200">
+        Whether you're a rental shop owner with questions, a customer needing help, or a partner inquiry — we're here.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Content -->
+<section class="section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Contact Info -->
+      <div data-reveal>
+        <h2 style="margin-bottom:var(--space-xl);">Contact Information</h2>
+
+        <div class="contact-detail">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-info-label">Email</div>
+            <a href={`mailto:${site.contact.email}`} class="contact-info-value" style="color:var(--accent)">{site.contact.email}</a>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.17h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.18 6.18l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-info-label">Phone</div>
+            <a href={`tel:${site.contact.phone.replace(/\s/g,'')}`} class="contact-info-value" style="color:var(--accent)">{site.contact.phone}</a>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-info-label">Office</div>
+            <div class="contact-info-value">{site.contact.address}</div>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="contact-info-label">Business Hours</div>
+            <div class="contact-info-value">{site.contact.businessHours}</div>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div style="margin-top:var(--space-xl);">
+          <div class="contact-info-label" style="margin-bottom:var(--space-md);">Follow Us</div>
+          <div class="social-links">
+            <a href={site.social.instagram} target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href={site.social.twitter} target="_blank" rel="noopener" class="social-link" aria-label="Twitter/X">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href={site.social.linkedin} target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href={site.social.whatsapp} target="_blank" rel="noopener" class="social-link" aria-label="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Map placeholder -->
+        <div class="map-placeholder">
+          📍 Koregaon Park, Pune
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div data-reveal data-delay="200">
+        <h2 style="margin-bottom:var(--space-xl);">Send Us a Message</h2>
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="contactName">Full Name *</label>
+              <input type="text" id="contactName" class="form-input" placeholder="Your full name" required />
+              <span class="form-error">Please enter your name</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contactPhone">Phone Number *</label>
+              <input type="tel" id="contactPhone" class="form-input" placeholder="+91 98765 43210" required />
+              <span class="form-error">Please enter a valid phone number</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contactEmail">Email Address *</label>
+            <input type="email" id="contactEmail" class="form-input" placeholder="you@example.com" required />
+            <span class="form-error">Please enter a valid email</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contactSubject">Subject *</label>
+            <select id="contactSubject" class="form-select form-input" required>
+              <option value="">Select a topic...</option>
+              <option value="partner">I want to list my rental shop</option>
+              <option value="booking">Booking question</option>
+              <option value="support">Customer support</option>
+              <option value="partnership">Business partnership</option>
+              <option value="press">Press / Media inquiry</option>
+              <option value="other">Other</option>
+            </select>
+            <span class="form-error">Please select a subject</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contactMessage">Message *</label>
+            <textarea id="contactMessage" class="form-textarea form-input" placeholder="Tell us how we can help you..." required></textarea>
+            <span class="form-error">Please enter your message</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="contactSubmit">
+            Send Message
+          </button>
+        </form>
+
+        <div class="success-state" id="contactSuccess">
+          <div class="success-icon">✉️</div>
+          <h3>Message Sent!</h3>
+          <p style="color:var(--text-secondary); margin-top:var(--space-md);">Thanks for reaching out. We'll get back to you within a few hours.</p>
+          <a href="/" class="btn btn-secondary" style="margin-top:var(--space-xl);">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contactForm') as HTMLFormElement;
+  const success = document.getElementById('contactSuccess')!;
+  const submitBtn = document.getElementById('contactSubmit') as HTMLButtonElement;
+
+  function validate(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
+    const group = input.closest('.form-group')!;
+    if (!input.value.trim()) {
+      group.classList.add('error');
+      return false;
+    }
+    if (input.type === 'email' && !input.value.includes('@')) {
+      group.classList.add('error');
+      return false;
+    }
+    if (input.type === 'tel' && input.value.replace(/\D/g,'').length < 10) {
+      group.classList.add('error');
+      return false;
+    }
+    group.classList.remove('error');
+    return true;
+  }
+
+  form?.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => validate(el as any));
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const inputs = form.querySelectorAll('input, select, textarea');
+    let valid = true;
+    inputs.forEach(el => { if (!validate(el as any)) valid = false; });
+    if (!valid) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    // Simulate send (replace with Supabase insert)
+    await new Promise(r => setTimeout(r, 1200));
+
+    form.style.display = 'none';
+    success.classList.add('visible');
+  });
+</script>

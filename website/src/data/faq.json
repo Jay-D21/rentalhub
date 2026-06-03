@@ -1,0 +1,47 @@
+{
+  "categories": [
+    {
+      "label": "For Riders",
+      "id": "riders",
+      "items": [
+        { "q": "How do I book a bike or car on RentalHub?", "a": "Search for your city and vehicle type, browse available listings from verified rental shops, choose your dates, and confirm your booking. Most shops confirm within 30 minutes." },
+        { "q": "Is my driving licence required to rent a vehicle?", "a": "Yes. A valid Indian driving licence is mandatory for all rentals. For bikes above 150cc and cars, ensure your licence covers the relevant category (MCWG for geared bikes, LMV for cars)." },
+        { "q": "What is the security deposit and when do I get it back?", "a": "Security deposit varies by vehicle (₹1,000–₹15,000). It is collected at the time of handover and fully refunded within 24 hours of vehicle return, provided no damage is found." },
+        { "q": "Is fuel included in the rental price?", "a": "Fuel is generally not included. Vehicles are typically handed over with a full tank, and you return them full. Some shops offer fuel-included packages — check the listing details." },
+        { "q": "Can I cancel my booking?", "a": "Yes. Cancellations made 24+ hours before the start time get a full refund. Cancellations within 24 hours may incur a 10-20% cancellation fee depending on the shop's policy." },
+        { "q": "What happens if the vehicle breaks down?", "a": "All listed vehicles come with roadside assistance from the rental shop. Call the shop directly or use the emergency contact on your booking confirmation. RentalHub support is also available at contact@rentalhub.in." }
+      ]
+    },
+    {
+      "label": "For Rental Partners",
+      "id": "partners",
+      "items": [
+        { "q": "How do I list my vehicles on RentalHub?", "a": "Register your shop on RentalHub, upload your vehicle details and photos, set your pricing, and go live. The whole process takes under 10 minutes. Our team verifies your shop within 24 hours." },
+        { "q": "How much commission does RentalHub charge?", "a": "Only 8% per successful booking — one of the lowest in the industry. Most platforms charge 25–35%. On a ₹1,000 booking, you keep ₹920." },
+        { "q": "Is there an exclusivity contract?", "a": "No exclusivity. You can list on RentalHub alongside any other platform. We believe in earning your business through better technology and more customers, not lock-in contracts." },
+        { "q": "How and when do I receive payments?", "a": "Payments are settled within 24–48 hours of trip completion directly to your registered bank account via NEFT/UPI. No delays, no holds." },
+        { "q": "Can I manage my own pricing and availability?", "a": "Absolutely. Your dashboard gives you full control over pricing, availability calendar, vehicle status, and booking acceptance. You can update anything in real-time." },
+        { "q": "What documents do I need to register my shop?", "a": "Business registration or GST certificate, one ID proof of owner (Aadhaar/PAN), vehicle RC books, and optional insurance documents. We'll guide you through the process." }
+      ]
+    },
+    {
+      "label": "Payments & Refunds",
+      "id": "payments",
+      "items": [
+        { "q": "What payment methods are accepted?", "a": "UPI, all major debit/credit cards, net banking, and wallets. Payments are processed securely through Razorpay." },
+        { "q": "Is online payment mandatory?", "a": "For marketplace bookings, yes — online payment confirms the booking instantly. Some shops may offer pay-at-pickup for local walk-in customers." },
+        { "q": "How long do refunds take?", "a": "Refunds are processed within 3–5 business days to your original payment method. UPI refunds are typically instant." },
+        { "q": "Is my payment information secure?", "a": "Yes. We use Razorpay (PCI-DSS Level 1 certified). Your card details are never stored on our servers." }
+      ]
+    },
+    {
+      "label": "Safety & Trust",
+      "id": "safety",
+      "items": [
+        { "q": "How do you verify rental shops?", "a": "Every shop goes through document verification (business registration, owner ID, vehicle RCs), a physical or video inspection of the fleet, and a review of prior customer ratings. Only verified shops are listed." },
+        { "q": "What if I face an issue with a rental shop?", "a": "Contact our support team at contact@rentalhub.in within 24 hours of the incident. We have a structured dispute resolution process and will mediate between you and the shop." },
+        { "q": "Are vehicles insured?", "a": "All vehicles on the platform are required to have valid third-party insurance as per Motor Vehicles Act. Many shops also offer comprehensive coverage. Check individual listings for details." }
+      ]
+    }
+  ]
+}

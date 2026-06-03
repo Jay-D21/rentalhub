@@ -1,0 +1,8 @@
+{
+  "counters": [
+    { "value": 500, "suffix": "+", "label": "Rental Partners" },
+    { "value": 50, "suffix": "+", "label": "Cities" },
+    { "value": 10000, "suffix": "+", "label": "Vehicles Listed" },
+    { "value": 4.8, "suffix": "★", "label": "Average Rating", "isDecimal": true }
+  ]
+}
